@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>간단한 지도 표시하기</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0j4lh9pi4d"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+
+    </style>
+</head>
+<body>
+<h1>네이버지도 API 학습</h1>
+  <div id="map" style="width:100%;height:400px;"></div>
+</body>
+
+<script>
+  var mapOptions = {
+
+  center: new naver.maps.LatLng(37.3595704, 127.105399),
+  zoom: 10
+  };
+
+  var map = new naver.maps.Map('map', mapOptions);
+
+  //위도 / 경도(0.0017966) 만큼의 차이가 나면 200m(실제값 : 199.9965971591953) 가 떨어졌다고 볼 수 있다.
+  //위도 또한 경도와 마찬가지
+  //거리를 재는 기준이 구체적이지는 못하다;; 생각해보길;;
+  var coord1 = new naver.maps.LatLng(0.0000000, 0.0000000);  //위도(위 아래), 경도(좌 우)
+  var coord2 = new naver.maps.LatLng(0.0000000, 0.0017966);
+
+  var distanceCheck = function getDistanceCheck (number1, number2){
+    var proj = map.getProjection();
+    var distance1 = proj.getDistance(number1, number2); 
+    return distance1;
+  }
+
+  console.log(distanceCheck(coord1, coord2));
+
+  if(distanceCheck(coord1,coord2)<200){
+    var bounds = new naver.maps.LatLngBounds(coord1,coord2);
+    console.log(bounds.hasLatLng(new naver.maps.LatLng(0.0000000, 0.0016966)))
+  }
+
+</script>
+</html>

@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url : jdbc:mysql://192.168.240.250:3306/fm
+    username: root
+    password: bizfm1234!
+    
+# camel case 설정.
+# 컬럼명 스네이크 케이스 -> 카멜케이스로 받아옴.
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
