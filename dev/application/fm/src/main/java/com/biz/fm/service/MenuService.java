@@ -28,16 +28,10 @@ public class MenuService {
 	}
 	
 	public Boolean updateMenu(Menu requestMenu) {
-		Menu newMember = menuRepository.findById(requestMenu.getId());
+		Menu oldMenu = this.getMenu(requestMenu.getId());
+		Menu newMenu = oldMenu.patch(requestMenu);
 		
-		if(requestMenu.getId() != null) newMember.setId(requestMenu.getId());
-		if(requestMenu.getName() != null) newMember.setName(requestMenu.getName());
-		if(requestMenu.getPrice() != null) newMember.setPrice(requestMenu.getPrice());
-		if(requestMenu.getDescription() != null) newMember.setDescription(requestMenu.getDescription());
-		if(requestMenu.getImage() != null) newMember.setImage(requestMenu.getImage());
-		if(requestMenu.getBusinessNumber() != null) newMember.setBusinessNumber(requestMenu.getBusinessNumber());
-		
-		return menuRepository.update(newMember)>0?true:false;
+		return menuRepository.update(newMenu)>0?true:false;
 	}
 
 	public Boolean deleteMenu(String id) {

@@ -22,4 +22,16 @@ public class Menu {
 	private Integer price;
 	private Timestamp createDate;
 	private Timestamp deleteDate;
+	
+	public Menu patch(Menu requestMenu) {
+		
+		if(requestMenu.getId() != null) this.setId(requestMenu.getId());
+		if(requestMenu.getName() != null) this.setName(requestMenu.getName());
+		if(requestMenu.getPrice() != null) this.setPrice(requestMenu.getPrice());
+		if(requestMenu.getDescription() != null) this.setDescription(requestMenu.getDescription());
+		if(requestMenu.getImage() != null) this.setImage(requestMenu.getImage());
+		if(requestMenu.getBusinessNumber() != null) this.setBusinessNumber(requestMenu.getBusinessNumber());
+		
+		return this;
+	}
 }

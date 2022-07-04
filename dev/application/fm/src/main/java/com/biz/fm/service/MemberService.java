@@ -30,14 +30,8 @@ public class MemberService {
 	}
 	
 	public Boolean updateMember(Member requestMember) {
-		Member newMember = memberRepository.findById(requestMember.getId());
-		
-		if(requestMember.getId() != null) newMember.setId(requestMember.getId());
-		if(requestMember.getName() != null) newMember.setName(requestMember.getName());
-		if(requestMember.getEmail() != null) newMember.setEmail(requestMember.getEmail());
-		if(requestMember.getPassword() != null) newMember.setPassword(requestMember.getPassword());
-		if(requestMember.getRole() != null) newMember.setRole(requestMember.getRole());
-		if(requestMember.getPhoneNumber() != null) newMember.setPhoneNumber(requestMember.getPhoneNumber());
+		Member oldMember = this.getMember(requestMember.getId());
+		Member newMember = oldMember.patch(requestMember);
 		
 		return memberRepository.update(newMember)>0?true:false;
 	}

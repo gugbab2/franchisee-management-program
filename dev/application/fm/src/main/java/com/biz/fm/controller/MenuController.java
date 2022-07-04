@@ -42,8 +42,8 @@ private final MenuService menuService;
 		return ResponseEntity.ok(menuService.updateMenu(menu));
 	}
 	
-	@DeleteMapping("/menu/{uuid}")
-	public ResponseEntity<?> deleteMenu(@PathVariable String uuid){
-		return ResponseEntity.ok(menuService.deleteMenu(uuid));
+	@DeleteMapping("/menu/{id}")
+	public ResponseEntity<?> deleteMenu(@PathVariable String id){
+		return ResponseEntity.ok(menuService.deleteMenu(id));
 	}
 }

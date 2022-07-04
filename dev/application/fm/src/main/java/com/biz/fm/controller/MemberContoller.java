@@ -42,9 +42,9 @@ public class MemberContoller {
 		return ResponseEntity.ok(memberService.updateMember(member)); 
 	}
 	
-	@DeleteMapping("/member/{uuid}")
-	public ResponseEntity<?> deleteMember(@PathVariable String uuid){
-		return ResponseEntity.ok(memberService.deleteMember(uuid));
+	@DeleteMapping("/member/{id}")
+	public ResponseEntity<?> deleteMember(@PathVariable String id){
+		return ResponseEntity.ok(memberService.deleteMember(id));
 	}
 	
 }

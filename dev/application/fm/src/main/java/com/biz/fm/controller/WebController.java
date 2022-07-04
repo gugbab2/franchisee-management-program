@@ -15,4 +15,32 @@ public class WebController {
 	public String register() {
 		return "register";
 	}
+	
+	@GetMapping("/")
+	public String mainDefault() {
+		return "index";
+	}
+	
+	@GetMapping("/index")
+	public String main() {
+		return "index";
+	}
+	
+	@GetMapping("/menuRegistration")
+	public String menuRegistration() {
+		return "menuRegistration";
+	}
+	
+	@GetMapping("/mypage")
+	public String mypage() {
+		return "mypage";
+	}
+	@GetMapping("/detail")
+	public String detail() {
+		return "detail";
+	}
+	@GetMapping("/franchiseeadd")
+	public String addfranchisee() {
+		return "franchiseeadd";
+	}
 }
