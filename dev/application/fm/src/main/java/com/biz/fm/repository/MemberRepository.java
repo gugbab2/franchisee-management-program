@@ -17,6 +17,9 @@ public interface MemberRepository {
 	
 	@Select("select * from member where email = #{email}")
 	public Member findByEmail(String email);
+	
+	@Select("select * from member where password = #{password}")
+	public Member findByPassword(String password);
 
 	@Insert("insert into member values "
 			+ "(#{id}, #{name}, #{email}, #{password}, #{role}, #{phoneNumber}, #{birth}, #{gender}, #{address}, now(), null)")

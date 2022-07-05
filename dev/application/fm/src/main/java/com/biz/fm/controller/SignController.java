@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.biz.fm.domain.Member;
 import com.biz.fm.domain.Sign;
+import com.biz.fm.exception.InvalidPasswordException;
 import com.biz.fm.jwt.JwtTokenProvider;
 import com.biz.fm.service.SignService;
 
@@ -26,7 +27,6 @@ public class SignController {
 	
 	private final JwtTokenProvider jwtTokenProvider;
 //	private final ResponseService responseService;
-//	private final PasswordEncoder passwordEncoder;
 	private final SignService signService;
 	
 	@ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
@@ -46,7 +46,8 @@ public class SignController {
 	public ResponseEntity<?> signin(
 			@ApiParam(value = "로그인 정보", required = true) @RequestBody Sign.In signInInfo) {
 		
-		// 패스워드 비교 추가~~!!
+		boolean result = signService.isPassword(signInInfo);
+		if(result) throw new InvalidPasswordException(); 
 		
 		Member member = signService.signIn(signInInfo);
 		

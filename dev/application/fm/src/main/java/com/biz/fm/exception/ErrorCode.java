@@ -11,7 +11,8 @@ public enum ErrorCode {
 	
 	//Member
 	EMAIL_DUPLICATION(HttpStatus.BAD_REQUEST, "M001", "Email is Duplication"),
-	DATE_PARSE_ERROR(HttpStatus.BAD_REQUEST, "M002", "Date format Exception")
+	DATE_PARSE_ERROR(HttpStatus.BAD_REQUEST, "M002", "Date format Exception"),
+	INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "M003", "Invalid Password Exception")
 	;
 	
 	private final HttpStatus status;

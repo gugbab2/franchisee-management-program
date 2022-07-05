@@ -23,6 +23,11 @@ public class FmExceptionHandler {
 		return getResponseEntity(ErrorCode.EMAIL_DUPLICATION);
 	}
 	
+	@ExceptionHandler(value = InvalidPasswordException.class)
+	public ResponseEntity<?> invalidPasswordException(InvalidPasswordException ex){
+		return getResponseEntity(ErrorCode.INVALID_PASSWORD);
+	}
+	
 	@ExceptionHandler(value = ParseException.class)
 	public ResponseEntity<?> parseException(ParseException ex){
 		return getResponseEntity(ErrorCode.DATE_PARSE_ERROR);

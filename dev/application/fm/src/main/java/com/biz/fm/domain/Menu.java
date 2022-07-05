@@ -14,6 +14,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Menu {
+	
 	private String id;
 	private String name;
 	private String description; 

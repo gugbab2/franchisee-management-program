@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.biz.fm.domain.Member;
@@ -20,11 +21,12 @@ import lombok.RequiredArgsConstructor;
 public class SignService {
 	
 	private final MemberRepository memberRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	public boolean signUp(Sign.Up signUpinfo) throws ParseException {
 		
 		boolean result = this.isDuplicate(signUpinfo.getEmail());
-		if(result) throw new EmailDuplicationException(); 
+		if(result) throw new EmailDuplicationException();
 		
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
 		Date date = dt.parse(signUpinfo.getBirth()); 
@@ -34,7 +36,7 @@ public class SignService {
 								.id(uuid)
 								.name(signUpinfo.getName())
 								.email(signUpinfo.getEmail())
-								.password(signUpinfo.getPassword())
+								.password(passwordEncoder.encode(signUpinfo.getPassword()))
 								.role("admin")
 								.phoneNumber(Integer.parseInt(signUpinfo.getPhoneNumber()))
 								.birth(date)
@@ -50,10 +52,18 @@ public class SignService {
 		return memberRepository.findByEmail(signInInfo.getEmail());
 	}
 	
-	//중복확인
+	//중복 확인
 	public boolean isDuplicate(String email) {
 		Member member = memberRepository.findByEmail(email);
 		if(member == null) return false;
 		else return true;
+	}
+	
+	//패스워드 확인
+	public boolean isPassword(Sign.In signInInfo) {
+		Member beforeMember = memberRepository.findByEmail(signInInfo.getEmail());
+		boolean checkPassword = passwordEncoder.matches(beforeMember.getPassword(), signInInfo.getPassword());
+		if(checkPassword) return true;
+		else return false;
 	}
 }

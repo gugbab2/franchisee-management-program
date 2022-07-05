@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-// import MapOffCanvase from "../pages/MapOffCanvase";
 
 const {naver} = window;
 
-function NaverAPIMap() {
+function NaverAPIMap({callback}) {
   let FMIndexMap;
   let cLat,cLng;
 
@@ -39,15 +38,20 @@ function NaverAPIMap() {
           },
         });
 
-        //클릭시 마커 생성 및 마커 옆에 위경도 출력(개발을 위해서 냅둠)
-        naver.maps.Event.addListener(FMIndexMap, 'click', (e) => {
+        // 인포윈도우 클릭 -> 오프캔퍼스 출력
+        // infowindow.addListener(FMIndexMap,'click', (e) => {
+          
+        // });
 
+        //클릭시 마커 생성 및 마커 옆에 위경도 출력(개발을 위해서 냅둠)
+        
+        naver.maps.Event.addListener(FMIndexMap, 'click', (e) => {
           currentMarker = new naver.maps.Marker({
             position: e.coord,
             map: FMIndexMap,
           });
-
-          infowindow.open(FMIndexMap, currentMarker);
+          
+          infowindow.open(FMIndexMap, currentMarker, callback());
 
           let coordHtml =
           'lat: ' + e.coord._lat + '<br />' +
@@ -84,8 +88,7 @@ function NaverAPIMap() {
     <>
       <div id='FMIndexMapDom' className="FMIndexMapDom" style={{ width : '100%', height:'550px'}}></div>
       <button onClick={currentLoc}>현 위치</button>
-      
-      {/* <MapOffCanvase></MapOffCanvase> */}
+
     </>
   )
 }

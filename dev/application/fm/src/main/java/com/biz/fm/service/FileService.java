@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.biz.fm.domain.UploadFileResponse;
 import com.biz.fm.exception.FileNotFoundException;
@@ -81,11 +82,11 @@ public class FileService {
                 Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 100, 100);
             }
             
-            String fileDownloadUri = "/api/file/" + fileName;
+            String fileDownloadPath = "/api/file/" + fileName;
 
             return UploadFileResponse.builder()
                     .fileName(fileName)
-                    .fileDownloadUri(fileDownloadUri)
+                    .fileDownloadPath(fileDownloadPath)
                     .fileType(file.getContentType())
                     .size(file.getSize()) //byte;
                     .build();
