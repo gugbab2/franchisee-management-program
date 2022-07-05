@@ -18,6 +18,9 @@ public interface FimageRepository{
 	@Select("select * from fimage where id = #{id} and delete_date is null")
 	public Fimage findById(String id);
 	
+	@Select("select * from fimage where business_number = #{businessNumber} and delete_date is null")
+	public List<Fimage> findByBusinessNumber(String businessNumber);
+	
 	@Insert("insert into fimage values (#{id}, #{businessNumber}, #{path}, #{size}, now(), null)")
 	public int insert(Fimage fimage);
 	

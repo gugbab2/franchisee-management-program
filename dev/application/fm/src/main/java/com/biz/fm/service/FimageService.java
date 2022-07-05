@@ -23,7 +23,11 @@ public class FimageService {
 		return fimageRepository.findAll();
 	}
 	
-	public Fimage findById(String id) {
+	public List<Fimage> findByBusinessNumber(String BusinessNumber) {
+		return fimageRepository.findByBusinessNumber(BusinessNumber);
+	}
+	
+	public Fimage findById(String id) { 
 		return fimageRepository.findById(id);
 	}
 	

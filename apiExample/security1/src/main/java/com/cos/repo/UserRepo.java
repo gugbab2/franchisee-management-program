@@ -17,6 +17,9 @@ public interface UserRepo {
 	@Select("select * from user where uid=#{uid}")
 	public User findById(String uid);
 	
+	@Select("select * from user where msrl=#{msrl}")
+	public User findByMsrl(int msrl);
+	
 	@Insert("insert into user (uid, name, password, role) values (#{uid}, #{name}, #{password}, #{role})")
 	public int save(User user);
 	

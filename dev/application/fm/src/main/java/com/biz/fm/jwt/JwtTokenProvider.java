@@ -1,8 +1,7 @@
-package com.cos.security;
+package com.biz.fm.jwt;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+
+import com.biz.fm.service.CustomUserDetailService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -27,7 +28,7 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 
 	private long tokenValidMilisecond = 1000L * 60 * 60; // 1시간만 토큰 유효
 
-	private final UserDetailsService userDetailsService;
+	private final CustomUserDetailService userDetailsService;
 
 	@PostConstruct
 	protected void init() {
@@ -47,6 +48,7 @@ public class JwtTokenProvider { // JWT 토큰을 생성 및 검증 모듈
 	}
 
 	// Jwt 토큰으로 인증 정보를 조회
+	//UsernamePasswordAuthenticationToken(아이디, 비밀번호, 권한)
 	public Authentication getAuthentication(String token) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

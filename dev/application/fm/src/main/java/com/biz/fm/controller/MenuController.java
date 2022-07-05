@@ -16,34 +16,39 @@ import com.biz.fm.service.MenuService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/menu")
 @RequiredArgsConstructor
 public class MenuController {
 
-private final MenuService menuService;
+	private final MenuService menuService;
 	
-	@GetMapping("/menu")
+	@GetMapping
 	public ResponseEntity<?> list(){
 		return ResponseEntity.ok(menuService.getList());
 	}
 	
-	@GetMapping("/menu/{id}")
+	@GetMapping("/{businessNumber}")
+	public ResponseEntity<?> list(@PathVariable String businessNumber){
+		return ResponseEntity.ok(menuService.listByBusinessNumber(businessNumber));
+	}
+	
+	@GetMapping("/{id}")
 	public ResponseEntity<?> menu(@PathVariable String id){
 		return ResponseEntity.ok(menuService.getMenu(id));
 	}
 	
-	@PostMapping("/menu")
-	public ResponseEntity<?> addMenu(@RequestBody Menu menu){
+	@PostMapping
+	public ResponseEntity<?> add(@RequestBody Menu menu){
 		return ResponseEntity.ok(menuService.insertMenu(menu));
 	}
 	
-	@PutMapping("/menu")
-	public ResponseEntity<?> updateMenu(@RequestBody Menu menu){
-		return ResponseEntity.ok(menuService.updateMenu(menu));
+	@PutMapping("/{menuId}")
+	public ResponseEntity<?> update(@PathVariable String menuId, @RequestBody Menu menu){
+		return ResponseEntity.ok(menuService.updateMenu(menuId, menu));
 	}
 	
-	@DeleteMapping("/menu/{id}")
-	public ResponseEntity<?> deleteMenu(@PathVariable String id){
-		return ResponseEntity.ok(menuService.deleteMenu(id));
+	@DeleteMapping("/{menuId}")
+	public ResponseEntity<?> delete(@PathVariable String menuId){
+		return ResponseEntity.ok(menuService.deleteMenu(menuId));
 	}
 }

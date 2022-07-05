@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.biz.fm.domain.Franchisee;
 import com.biz.fm.service.FranchiseeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 

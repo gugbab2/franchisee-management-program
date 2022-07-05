@@ -16,35 +16,36 @@ import com.biz.fm.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class MemberContoller {
 
 	private final MemberService memberService;
 	
-	@GetMapping("/member")
+	@GetMapping
 	public ResponseEntity<?> list(){
 		return ResponseEntity.ok(memberService.getList());
 	}
 	
-	@GetMapping("/member/{id}")
-	public ResponseEntity<?> member(@PathVariable String id){
-		return ResponseEntity.ok(memberService.getMember(id));
+	@GetMapping("/{memberId}")
+	public ResponseEntity<?> member(@PathVariable String memberId){
+		return ResponseEntity.ok(memberService.getMember(memberId));
 	}
 	
-	@PostMapping("/member")
-	public ResponseEntity<?> addMember(@RequestBody Member member){
-		return ResponseEntity.ok(memberService.insertMember(member));
+// Login으로 대체.	
+//	@PostMapping
+//	public ResponseEntity<?> addMember(@RequestBody Member member){
+//		return ResponseEntity.ok(memberService.insertMember(member));
+//	}
+	
+	@PutMapping("/{memberId}")
+	public ResponseEntity<?> updateMember(@PathVariable String memberId, @RequestBody Member member){
+		return ResponseEntity.ok(memberService.updateMember(memberId, member)); 
 	}
 	
-	@PutMapping("/member")
-	public ResponseEntity<?> updateMember(@RequestBody Member member){
-		return ResponseEntity.ok(memberService.updateMember(member)); 
-	}
-	
-	@DeleteMapping("/member/{id}")
-	public ResponseEntity<?> deleteMember(@PathVariable String id){
-		return ResponseEntity.ok(memberService.deleteMember(id));
+	@DeleteMapping("/{memberId}")
+	public ResponseEntity<?> deleteMember(@PathVariable String memberId){
+		return ResponseEntity.ok(memberService.deleteMember(memberId));
 	}
 	
 }

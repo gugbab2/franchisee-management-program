@@ -8,40 +8,7 @@
     <link href="header.css" type="text/css" rel="stylesheet">    
     <style type="text/css" rel="stylesheet">
 
-        body{
-            height: 100%;
-        }
-        .second_input{
-            margin-top: 15px;
-        }
-        .col> *{
-            margin-top: 15px;
-        }.header{
-    width: 100%;
-    height: 100px;
-    border-bottom: 1px solid gray;
-}
-.Logo{
-    float: left;
-}
-.info{
-    float: right;
-    margin-top: 30px;
-}
-
-.footer{
-    width: 100%;
-    border-top: 1px solid gray;
-    margin-top: 20px;
-}
-.titleLine{
-    border-bottom: 1px solid gray;
-    margin-bottom: 20px;;
-}
-.pagename{
-    text-align: center;
-    margin-top: 20px;
-}
+        
 
     </style>
 
@@ -53,48 +20,37 @@
 <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
 </head>
 <body>
-<div class="header">
-    <div class="Logo">
-        <h1>비즈플레이 & 비플페이</h1>  
-    </div>
-    <div class="info">
-        <a>로그인 정보 / 로그아웃</a>
-    </div>
-</div>
+
 
 <!-- Content Start -->
     <div class="container">
         
-        <div class="row titleLine">
-          <div class="col">
-          </div>
+        <div class="row franchiseeadd-container--titleZone">
           <div class="col pagename">
             <h2>상권 등록</h2>
           </div>
-          <div class="col">
-          </div>
         </div>
 
-        <div class="row">
+        <div class="row franchiseeadd-container--mainZone">
             <form>
-                <div class="mb-3">
+                <div class="mb-3 franchiseeadd-container--businessNumberZone">
                     <label for="business_number" class="form-label">사업자 번호</label>
                     <input type="text" class="form-control" id="business_number">
                 </div>
-                <div class="row">
+                <div class="row franchiseeadd-container--businessInfoZone">
                     <div class="col-2">
                         <img src="https://dummyimage.com/200x250/000/fff&text=testst">
                         <input type="file" class="file">
                     </div>
                     
                     <div class="col-10">
-                        <label for="business_number" class="form-label">가게명</label>
+                        <label for="" class="form-label">가게명</label>
                         <input type="text" class="col-7 form-control" id="franchisee_name">
-                        <label for="business_number" class="form-label">대표자</label>
+                        <label for="" class="form-label">대표자</label>
                         <input type="text" class="col-7 form-control" id="perspect">
                     </div>
                 </div>
-                <div class="row">
+                <div class="row franchiseeadd-container--postZone">
                     <div class="col-3">
                         <input type="text" class="form-control" id="post_code" placeholder="우편번호">
                     </div>
@@ -102,25 +58,25 @@
                         <input type="button" class="btn btn-primary" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>   
                     </div>
                 </div>
-                <div class="row">
+                <div class="row franchiseeadd-container--addressZone">
                     <div class="col">
                         <input type="text" class="form-control" id="address" placeholder="주소">
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row franchiseeadd-container--detailAddressZone">
                     <div class="col">
                         <input type="text" class="form-control" id="address_detail" placeholder="상세주소">
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row franchiseeadd-container--franchiseeIntroZone">
                     <div class="col">
                         <label class="form-label">가맹점 소개</label>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row franchiseeadd-container--introValueZone">
                     <div class="col">
                         <textarea class="form-control"></textarea>
                     </div>

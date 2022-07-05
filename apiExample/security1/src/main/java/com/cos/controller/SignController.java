@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cos.domain.User;
+import com.cos.jwt.JwtTokenProvider;
 import com.cos.repo.CommonResult;
 import com.cos.repo.SingleResult;
 import com.cos.repo.UserRepo;
-import com.cos.security.JwtTokenProvider;
 import com.cos.service.ResponseService;
 
 import io.swagger.annotations.Api;
@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/v1")
-@Slf4j
 public class SignController {
 
 	private final UserRepo userRepo;
@@ -33,10 +32,11 @@ public class SignController {
 	private final ResponseService responseService;
 	private final PasswordEncoder passwordEncoder;
 
-	@ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
+	@ApiOperation(value = "로그인", notes = "이메일을 사용해 회원 로그인.")
 	@PostMapping(value = "/signin")
 	public SingleResult<String> signin(
-			@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String id) {
+			@ApiParam(value = "회원ID : 이메일", required = true) @RequestParam String id,
+			@ApiParam(value = "비밀번호", required = true) @RequestParam String password) {
 		User user = userRepo.findById(id);
 		return responseService
 				.getSingleResult(jwtTokenProvider.createToken(String.valueOf(user.getMsrl()), user.getRole()));
@@ -56,6 +56,6 @@ public class SignController {
 			return responseService.getSuccessResult();
 		}else {
 			return responseService.getFailResult(401, password);
-		}
+		} 
 	}
 }

@@ -1,8 +1,6 @@
 package com.biz.fm.service;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -22,22 +20,22 @@ public class MemberService {
 	}
 	
 	public Member getMember(String id) {
-		return memberRepository.findById(id);
+		return memberRepository.findByEmail(id);
 	}
 	
 	public Boolean insertMember(Member member) {
-		return memberRepository.insert(member)>0?true:false;
+		return memberRepository.insert(member) > 0 ? true : false;
 	}
 	
-	public Boolean updateMember(Member requestMember) {
-		Member oldMember = this.getMember(requestMember.getId());
+	public Boolean updateMember(String memberId, Member requestMember) {
+		Member oldMember = this.getMember(memberId);
 		Member newMember = oldMember.patch(requestMember);
 		
-		return memberRepository.update(newMember)>0?true:false;
+		return memberRepository.update(newMember) > 0 ? true : false;
 	}
 
 	public Boolean deleteMember(String id) {
-		return memberRepository.delete(id)>0?true:false;
+		return memberRepository.delete(id) > 0 ? true : false;
 	}
 
 }

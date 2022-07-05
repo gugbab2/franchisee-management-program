@@ -8,7 +8,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- naver map api -->
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=4dahz1jg7c"></script>
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=j3827m3yos"></script>
 
 <!-- kakao post number api -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -41,6 +41,8 @@
 </head>
 
 <script>
+var FMIndexMap;
+
 $(function(){
    // 주소로 좌표 조회
    var getMappingLocation = ()=>{
@@ -53,7 +55,7 @@ $(function(){
                    success:function(data){       
                       var testMarker = new naver.maps.Marker({
                                position: new naver.maps.LatLng(data.documents[0].y,data.documents[0].x),
-                               map : map
+                               map : FMIndexMap
                             });
                       },
                    error : function(e){      
@@ -62,32 +64,42 @@ $(function(){
               }
           }).open();
    };
-   $('#address').click(function(){
-  	 getMappingLocation();
-   });
-   // 네이버 지도
-   var locationBtnHtml = '<a href="#" class="btn_mylct"><span class="spr_trff spr_ico_mylct">현위치</span></a>';
-
-   var map = new naver.maps.Map('map');
    
+   //지도 객체 생성
+   FMIndexMap = new naver.maps.Map("FMIndexMap");
+
+   //위치 정보 권한 허용 o, 위치 정보 받아오기, 지도 center 현위치로 설정
+   if(navigator.geolocation){
+       navigator.geolocation.getCurrentPosition((position)=>{
+           FMIndexMap.setCenter({y:position.coords.latitude,x:position.coords.longitude})
+       })
+   }else {//위치 정보 권한 허용 x
+       var center = FMIndexMap.getCenter();
+       infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
+       infowindow.open(FMIndexMap, center);
+   }
+   
+   //마커 리스트 생성 => 이후 200미터 안의 가맹점 표시를 위해 냅둠
    var markerList = [];
    var menuLayer = $('<div style="position:absolute;z-index:10000;background-color:#fff;border:solid 1px #333;padding:10px;display:none;"></div>');
-
-   map.getPanes().floatPane.appendChild(menuLayer[0]);
-
-   // click시 마커 생성
+   FMIndexMap.getPanes().floatPane.appendChild(menuLayer[0]);
+   
+   //지도 클릭시 마커 생성에 대한 infowindow 설정
    var contentString = '장소';
    var infowindow = new naver.maps.InfoWindow({
        content: contentString
    });
-
-   naver.maps.Event.addListener(map, 'click', (e) => {
+   
+   //클릭시 마커 생성 및 마커 옆에 위경도 출력(개발을 위해서 냅둠)
+   naver.maps.Event.addListener(FMIndexMap, 'click', (e) => {
        var marker = new naver.maps.Marker({
            position: e.coord,
-           map: map
+           map: FMIndexMap
        });
       
-       infowindow.open(map, marker);
+       infowindow.open(FMIndexMap, marker);
+       
+       //마커 옆의 별도의 정보
        var coordHtml =
            'lat: ' + e.coord._lat + '<br />' +
            'lng: ' + e.coord._lng;
@@ -98,18 +110,15 @@ $(function(){
        }).html(coordHtml);
        
        markerList.push(marker);
-       var Offcanvas = document.getElementsByClassName('offcanvas').demo;
-       var bsOffcanvas = new bootstrap.Offcanvas(Offcanvas);
-       bsOffcanvas.toggle();
        
-       naver.maps.Event.addListener(map, 'mousedown', (e) => {
+       naver.maps.Event.addListener(FMIndexMap, 'mousedown', (e) => {
            menuLayer.hide();
            infowindow.close();
        });
    });
-    
-   // 다른곳 클릭시 마커 해제
-    naver.maps.Event.addListener(map, 'mousedown', (e) => {
+   
+   //지도 드래그시 지도에 존재하는 기존의 마커 숨기기
+   naver.maps.Event.addListener(FMIndexMap, 'mousedown', (e) => {
        for (var i=0, ii=markerList.length; i<ii; i++) {
             markerList[i].setMap(null);
         }
@@ -119,57 +128,11 @@ $(function(){
         menuLayer.hide();
         infowindow.close();
     });
-   
-    function showPosition(position) {
-         var location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
-         map.setCenter(location);
-    }
-
-   // 현위치 아이콘 띄우고 클릭시 현위치로 이동
-   naver.maps.Event.once(map, 'init', function() {
-       var customControl = new naver.maps.CustomControl(locationBtnHtml, {
-           position: naver.maps.Position.BOTTOM_RIGHT
-       });
-
-       customControl.setMap(map);
-
-       naver.maps.Event.addDOMListener(customControl.getElement(), 'click', (position) => {
-          navigator.geolocation.getCurrentPosition(showPosition);
-       });
-   });
-
-   function onSuccessGeolocation(position) {
-       var location = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
-
-      var mainMarker = new naver.maps.Marker({
-          position: new naver.maps.LatLng(position.coords.latitude,position.coords.longitude),
-          map: map
-      });
-       
-       map.setCenter(location); // 얻은 좌표를 지도의 중심으로 설정합니다.
-       map.setZoom(18); // 지도의 줌 레벨을 변경합니다.
-   }
-
-   function onErrorGeolocation() {
-       var center = map.getCenter();
-
-       infowindow.setContent('<div style="padding:20px;">' +
-           '<h5 style="margin-bottom:5px;color:#f00;">Geolocation failed!</h5>'+ "latitude: "+ center.lat() +"<br />longitude: "+ center.lng() +'</div>');
-
-       infowindow.open(map, center);
-   }
-   
-   if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(onSuccessGeolocation, onErrorGeolocation);
-    } else {
-        var center = map.getCenter();
-        infowindow.setContent('<div style="padding:20px;"><h5 style="margin-bottom:5px;color:#f00;">Geolocation not supported</h5></div>');
-        infowindow.open(map, center);
-    }
 });
 </script>
 <body>
-	<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" id="demo">
+<div class="container">
+	<!-- <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" id="demo">
       <div class="offcanvas-header">
         <h1 class="offcanvas-title">검색키워드 입력</h1>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
@@ -236,10 +199,11 @@ $(function(){
           </div>
       	</div>
       </div>
-  </div>
+  </div> -->
   <div class="container-fluid mt-3">
-  	<div id="map" style="width:100%;height:500px;"></div>
-		<button id=address>우편번호로찾기</button>
+  	<div id="FMIndexMap" style="width:100%;height:500px;"></div>
+	<button id="address">우편번호로찾기</button>
   </div>
+</div>
 </body>
 </html>

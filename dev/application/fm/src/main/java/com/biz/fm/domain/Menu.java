@@ -17,7 +17,7 @@ public class Menu {
 	private String id;
 	private String name;
 	private String description; 
-	private String image;
+	private String imagePath;
 	private String businessNumber;
 	private Integer price;
 	private Timestamp createDate;
@@ -25,11 +25,10 @@ public class Menu {
 	
 	public Menu patch(Menu requestMenu) {
 		
-		if(requestMenu.getId() != null) this.setId(requestMenu.getId());
 		if(requestMenu.getName() != null) this.setName(requestMenu.getName());
 		if(requestMenu.getPrice() != null) this.setPrice(requestMenu.getPrice());
 		if(requestMenu.getDescription() != null) this.setDescription(requestMenu.getDescription());
-		if(requestMenu.getImage() != null) this.setImage(requestMenu.getImage());
+		if(requestMenu.getImagePath() != null) this.setImagePath(requestMenu.getImagePath());
 		if(requestMenu.getBusinessNumber() != null) this.setBusinessNumber(requestMenu.getBusinessNumber());
 		
 		return this;

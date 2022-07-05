@@ -1,6 +1,7 @@
 package com.biz.fm.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -19,23 +20,28 @@ public class MenuService {
 		return menuRepository.findAll();
 	}
 	
+	public List<Menu> listByBusinessNumber(String businessNumber){
+		return menuRepository.findBybusinessNumber(businessNumber);
+	}
+	
 	public Menu getMenu(String id) {
 		return menuRepository.findById(id);
 	}
 	
 	public Boolean insertMenu(Menu menu) {
-		return menuRepository.insert(menu)>0?true:false;
+		menu.setId(UUID.randomUUID().toString());
+		return menuRepository.insert(menu) > 0 ? true : false;
 	}
 	
-	public Boolean updateMenu(Menu requestMenu) {
-		Menu oldMenu = this.getMenu(requestMenu.getId());
-		Menu newMenu = oldMenu.patch(requestMenu);
+	public Boolean updateMenu(String menuId, Menu menu) {
+		Menu oldMenu = this.getMenu(menuId);
+		Menu newMenu = oldMenu.patch(menu);
 		
-		return menuRepository.update(newMenu)>0?true:false;
+		return menuRepository.update(newMenu) > 0 ? true : false;
 	}
 
 	public Boolean deleteMenu(String id) {
-		return menuRepository.delete(id)>0?true:false;
+		return menuRepository.delete(id) > 0 ? true : false;
 	}
 
 }

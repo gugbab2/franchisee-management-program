@@ -25,7 +25,12 @@ public class FimageController {
 	private final FimageService fimageService;
 	
 	@GetMapping
-	public ResponseEntity<List<Fimage>> getList(){
+	public ResponseEntity<List<Fimage>> getListAll(){
+		 return ResponseEntity.ok(fimageService.findAll());
+	}
+	
+	@GetMapping("/{businessNumber}")
+	public ResponseEntity<List<Fimage>> getListByBusinessNumber(@PathVariable String businessNumber){
 		 return ResponseEntity.ok(fimageService.findAll());
 	}
 	
