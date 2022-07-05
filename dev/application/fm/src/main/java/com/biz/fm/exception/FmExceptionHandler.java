@@ -12,11 +12,6 @@ import lombok.extern.log4j.Log4j2;
 
 @RestControllerAdvice
 public class FmExceptionHandler {
-
-//	@ExceptionHandler(value = Exception.class)
-//	public ResponseEntity<?> exception(Exception ex){
-//		return getResponseEntity(ErrorCode.INTERNAL_SERVER_ERROR);
-//	}
 	
 	@ExceptionHandler(value = NotFoundException.class)
 	public ResponseEntity<?> notFoundException(Exception ex){

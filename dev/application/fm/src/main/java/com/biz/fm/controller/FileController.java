@@ -29,7 +29,7 @@ public class FileController {
         return fileService.loadFile(fileName);
     }
 
-    @GetMapping("/{fileName}/thumbnail")
+    @GetMapping("/thumbnail/{fileName}")
     public ResponseEntity<Resource> downloadThumbnail(@PathVariable String fileName) {
         return fileService.loadThumbnail(fileName);
     }

@@ -21,10 +21,8 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Member implements UserDetails{
 	
 	private String id;
@@ -88,6 +86,7 @@ public class Member implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
+	
 }
 
 

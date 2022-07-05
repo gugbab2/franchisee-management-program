@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biz.fm.domain.Member;
-import com.biz.fm.domain.SignInDto;
-import com.biz.fm.domain.SignUpDto;
+import com.biz.fm.domain.Sign;
 import com.biz.fm.jwt.JwtTokenProvider;
 import com.biz.fm.service.SignService;
 
@@ -33,7 +32,7 @@ public class SignController {
 	@ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(
-			@ApiParam(value = "회원가입 정보", required = true) @RequestBody SignUpDto signUpInfo) throws ParseException {
+			@ApiParam(value = "회원가입 정보", required = true) @RequestBody Sign.Up signUpInfo) throws ParseException {
 
 		boolean result = signService.signUp(signUpInfo);
 		if(result) {
@@ -45,7 +44,7 @@ public class SignController {
 	@ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
 	@PostMapping("/signin")
 	public ResponseEntity<?> signin(
-			@ApiParam(value = "로그인 정보", required = true) @RequestBody SignInDto signInInfo) {
+			@ApiParam(value = "로그인 정보", required = true) @RequestBody Sign.In signInInfo) {
 		
 		// 패스워드 비교 추가~~!!
 		

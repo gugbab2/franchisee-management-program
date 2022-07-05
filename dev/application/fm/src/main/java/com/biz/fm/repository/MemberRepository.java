@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.biz.fm.domain.Member;
+import com.biz.fm.domain.MemberDto;
 
 @Mapper
 public interface MemberRepository {
@@ -19,7 +20,7 @@ public interface MemberRepository {
 
 	@Insert("insert into member values "
 			+ "(#{id}, #{name}, #{email}, #{password}, #{role}, #{phoneNumber}, #{birth}, #{gender}, #{address}, now(), null)")
-	public int insert(Member member);
+	public int insert(MemberDto.SignIn member);
 	
 	@Update("update member set "
 			+ "name = #{name}, email = #{email}, password = #{password}, role = #{role}, phone_number = #{phoneNumber} "

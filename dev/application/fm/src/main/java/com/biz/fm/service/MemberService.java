@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.biz.fm.domain.Member;
+import com.biz.fm.domain.MemberDto;
 import com.biz.fm.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class MemberService {
 		return memberRepository.findByEmail(id);
 	}
 	
-	public Boolean insertMember(Member member) {
+	public Boolean insertMember(MemberDto.SignIn member) {
 		return memberRepository.insert(member) > 0 ? true : false;
 	}
 	
