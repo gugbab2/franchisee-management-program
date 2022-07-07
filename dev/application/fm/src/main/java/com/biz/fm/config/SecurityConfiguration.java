@@ -12,7 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.biz.fm.jwt.*;
+import com.biz.fm.filter.*;
+import com.biz.fm.utils.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 

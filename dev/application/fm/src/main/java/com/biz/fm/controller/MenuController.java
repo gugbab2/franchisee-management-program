@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.biz.fm.domain.Menu;
+import com.biz.fm.domain.entity.Menu;
 import com.biz.fm.service.MenuService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,10 +22,10 @@ public class MenuController {
 
 	private final MenuService menuService;
 	
-	@GetMapping
-	public ResponseEntity<?> list(){
-		return ResponseEntity.ok(menuService.getList());
-	}
+//	@GetMapping
+//	public ResponseEntity<?> list(){
+//		return ResponseEntity.ok(menuService.getList());
+//	}
 	
 	@GetMapping("/{businessNumber}")
 	public ResponseEntity<?> list(@PathVariable String businessNumber){

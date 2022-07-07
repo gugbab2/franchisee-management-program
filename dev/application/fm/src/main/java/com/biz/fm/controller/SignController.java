@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.biz.fm.domain.Member;
-import com.biz.fm.domain.Sign;
-import com.biz.fm.exception.InvalidPasswordException;
-import com.biz.fm.jwt.JwtTokenProvider;
+import com.biz.fm.domain.dto.Sign;
+import com.biz.fm.domain.dto.Token;
+import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.entity.Member;
+import com.biz.fm.exception.custom.InvalidPasswordException;
 import com.biz.fm.service.SignService;
+import com.biz.fm.utils.JwtTokenProvider;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,8 +27,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/sign")
 public class SignController {
 	
-	private final JwtTokenProvider jwtTokenProvider;
-//	private final ResponseService responseService;
 	private final SignService signService;
 	
 	@ApiOperation(value = "회원가입", notes = "회원가입을 한다.")
@@ -34,28 +34,14 @@ public class SignController {
 	public ResponseEntity<?> signup(
 			@ApiParam(value = "회원가입 정보", required = true) @RequestBody Sign.Up signUpInfo) throws ParseException {
 
-		boolean result = signService.signUp(signUpInfo);
-		if(result) {
-			return ResponseEntity.ok(signUpInfo);
-		}
-		return ResponseEntity.badRequest().body(signUpInfo);
+		MemberRead result = signService.signUp(signUpInfo);
+		return ResponseEntity.ok(result);
 	}
 	
 	@ApiOperation(value = "로그인", notes = "이메일 회원 로그인을 한다.")
 	@PostMapping("/signin")
-	public ResponseEntity<?> signin(
+	public ResponseEntity<Token> signin(
 			@ApiParam(value = "로그인 정보", required = true) @RequestBody Sign.In signInInfo) {
-		
-		boolean result = signService.isPassword(signInInfo);
-		if(result) throw new InvalidPasswordException(); 
-		
-		Member member = signService.signIn(signInInfo);
-		
-		if(member!=null) {
-			String token = jwtTokenProvider.createToken(String.valueOf(member.getId()), member.getRole());
-			return ResponseEntity.ok(token);
-		}
-		return ResponseEntity.badRequest().build();
-	
+		return ResponseEntity.ok(signService.signIn(signInInfo));
 	}
 }

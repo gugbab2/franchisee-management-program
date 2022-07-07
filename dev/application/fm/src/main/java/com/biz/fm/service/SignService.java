@@ -5,14 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.biz.fm.domain.Member;
-import com.biz.fm.domain.MemberDto;
-import com.biz.fm.domain.Sign;
-import com.biz.fm.exception.EmailDuplicationException;
+import com.biz.fm.domain.dto.MemberDto;
+import com.biz.fm.domain.dto.Sign;
+import com.biz.fm.domain.dto.Token;
+import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.SignIn;
+import com.biz.fm.domain.entity.Member;
+import com.biz.fm.exception.custom.EmailDuplicationException;
+import com.biz.fm.exception.custom.InvalidEmailException;
+import com.biz.fm.exception.custom.InvalidPasswordException;
 import com.biz.fm.repository.MemberRepository;
+import com.biz.fm.utils.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,17 +29,19 @@ public class SignService {
 	
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final MemberService memberService;
 	
-	public boolean signUp(Sign.Up signUpinfo) throws ParseException {
+	public MemberDto.MemberRead signUp(Sign.Up signUpinfo) throws ParseException {
 		
 		boolean result = this.isDuplicate(signUpinfo.getEmail());
 		if(result) throw new EmailDuplicationException();
 		
 		SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd"); 
 		Date date = dt.parse(signUpinfo.getBirth()); 
-		String uuid = UUID.randomUUID().toString();
+		String uuid = UUID.randomUUID().toString().replace("-", "");
 		
-		MemberDto.SignIn newMember = MemberDto.SignIn.builder()
+		SignIn newMember = SignIn.builder()
 								.id(uuid)
 								.name(signUpinfo.getName())
 								.email(signUpinfo.getEmail())
@@ -44,24 +53,34 @@ public class SignService {
 								.address(signUpinfo.getAddress())
 								.build();
 
-		memberRepository.insert(newMember);
-		return true;
+		MemberRead memberRead =  memberService.insert(newMember);
+		
+		return memberRead;
 	}
 	
-	public Member signIn(Sign.In signInInfo) {
-		return memberRepository.findByEmail(signInInfo.getEmail());
+	public Token signIn(Sign.In signInInfo) {
+		
+		Member member = memberRepository.findEntityByEmail(signInInfo.getEmail());
+		if(member == null) throw new InvalidEmailException();
+		
+		if(passwordEncoder.matches(signInInfo.getPassword(), member.getPassword())) {
+			String token = jwtTokenProvider.createToken(member.getId(), member.getRole());
+			Token createToken = new Token(token);
+			return createToken;
+		}else throw new InvalidPasswordException();
 	}
 	
 	//중복 확인
 	public boolean isDuplicate(String email) {
-		Member member = memberRepository.findByEmail(email);
+		Member member = memberRepository.findEntityByEmail(email);
 		if(member == null) return false;
 		else return true;
 	}
 	
 	//패스워드 확인
 	public boolean isPassword(Sign.In signInInfo) {
-		Member beforeMember = memberRepository.findByEmail(signInInfo.getEmail());
+		//Member 가 null 일 때 예외처리
+		Member beforeMember = memberRepository.findEntityByEmail(signInInfo.getEmail());
 		boolean checkPassword = passwordEncoder.matches(beforeMember.getPassword(), signInInfo.getPassword());
 		if(checkPassword) return true;
 		else return false;

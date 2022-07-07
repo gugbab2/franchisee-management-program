@@ -23,9 +23,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.biz.fm.domain.UploadFileResponse;
-import com.biz.fm.exception.FileNotFoundException;
-import com.biz.fm.exception.FileStorageException;
+import com.biz.fm.domain.dto.UploadFileResponse;
+import com.biz.fm.exception.custom.FileNotFoundException;
+import com.biz.fm.exception.custom.FileStorageException;
 
 import lombok.AllArgsConstructor;
 import net.coobird.thumbnailator.Thumbnailator;

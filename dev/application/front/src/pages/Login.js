@@ -1,10 +1,9 @@
-import Header from './Header';
-import Footer from './Footer';
+import Footer from '../template/Footer'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Container,Row,Col } from 'react-bootstrap';
 
-  function BasicExample() {
+  function LoginFormDesign() {
     return (
       <Container>
         <Row>
@@ -28,8 +27,8 @@ import { Container,Row,Col } from 'react-bootstrap';
           <Button variant="primary" type="submit">
             로그인
           </Button>
-          <div class="register mb-3">
-            <span><a href="#">회원가입</a><a class="search" href="#">아이디찾기/비밀번호찾기</a></span>
+          <div className="register mb-3">
+            <span><a href="#">회원가입</a><a className="search" href="#">아이디찾기/비밀번호찾기</a></span>
           </div>
         </Form>
       </Container>
@@ -39,9 +38,7 @@ import { Container,Row,Col } from 'react-bootstrap';
   function Login() {
     return (
       <div className="Login">
-        <Header></Header>
-        <BasicExample></BasicExample>
-        <Footer></Footer>
+        <LoginFormDesign></LoginFormDesign>
       </div>
     );
   }

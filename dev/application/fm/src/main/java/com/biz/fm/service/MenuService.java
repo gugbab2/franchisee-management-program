@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.biz.fm.domain.Menu;
+import com.biz.fm.domain.entity.Menu;
 import com.biz.fm.repository.MenuRepository;
 
 import lombok.RequiredArgsConstructor;

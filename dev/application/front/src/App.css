@@ -1,35 +1,99 @@
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  margin-top: 0;
+}
+
+
+#header__Navbar {
+  background-color: red;
+}
+
+#header__mainLogo {
+  font-size: 30px;
+  margin-left: 100px;
+  font-weight: bold;
+}
+
+#header__account {
+  margin-right: 100px;
+}
+
+#header__accountInfo {
+  color: black;
+  font-size: 16px;
+}
+
+#header--account__img {
+  margin-left: 5px;
+  height: 30px;
+}
+
 .Contents-Header {
     text-align: center;
     font-size: 26px;
+    font-weight: bold;
     width: 300px;
-    border-bottom: 1px solid gray;
-    margin-bottom: 100px;
+    border-bottom: 1px solid #444;
+    margin-bottom: 30px;
 }
 
 .Contents-Container>* {
   margin-bottom: 10px;
 }
 
+#AddMenu--menuAddBtn {
+  border: 1px solid skyblue;
+  background-color: rgba(0,0,0,0);
+  color: skyblue;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+#AddMenu--menuAddBtn:hover{
+  color:white;
+  background-color: skyblue;
+}
+
+#AddMenu--menuBar {
+  background-color: skyblue;
+  border: 1px solid skyblue;
+}
+
 #Contents-Container--MenuList {
   text-align: center;
-  width: 360px;
-  height: 410px;
+  /* width: 360px;
+  height: 410px; */
+  width: 1080px;
+  height: 460px;
   overflow: auto;
-  margin: 0px auto;
+  margin: 50px auto;
 }
 
 .Contents-Container--MenuList__Menu {
   text-align: center;
   width: 300px;
-
-  overflow: auto;
+  height: 400px;
   margin: 0px auto;
 } 
 
+.Contents-Container--MenuList__MenuImg {
+  width: 300px;
+  height: 300px;
+}
+
+
+
 .footer {
-  border-top: 1px solid #eee;
+  position: absolute;
+   border-top: 1px solid #444;  
+  color: black;
+  font-weight: bold;
+  background-color: lightgray;
+  width: 100%;
+  padding: 30px;  
   margin-top: 30px;
-  padding-top: 30px;
+  bottom : 0; 
 }
 
 .mb-3>*{

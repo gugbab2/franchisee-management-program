@@ -86,9 +86,9 @@ function NaverAPIMap({callback}) {
 
   return (
     <>
-      <div id='FMIndexMapDom' className="FMIndexMapDom" style={{ width : '100%', height:'550px'}}></div>
+      <div id='FMIndexMapDom' className="FMIndexMapDom" style={{ width : '100%', height:'900px'}}></div>
       <button onClick={currentLoc}>현 위치</button>
-
+      
     </>
   )
 }

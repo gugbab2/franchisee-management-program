@@ -1,5 +1,8 @@
 package com.biz.fm.controller;
 
+import java.util.List;
+
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.biz.fm.domain.Member;
+import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.MemberUpdate;
+import com.biz.fm.domain.entity.Member;
 import com.biz.fm.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,13 +28,13 @@ public class MemberContoller {
 	private final MemberService memberService;
 	
 	@GetMapping
-	public ResponseEntity<?> list(){
+	public ResponseEntity<List<MemberRead>> list() throws NotFoundException{
 		return ResponseEntity.ok(memberService.getList());
 	}
 	
 	@GetMapping("/{memberId}")
-	public ResponseEntity<?> member(@PathVariable String memberId){
-		return ResponseEntity.ok(memberService.getMember(memberId));
+	public ResponseEntity<MemberRead> get(@PathVariable String memberId) throws NotFoundException{
+		return ResponseEntity.ok(memberService.getMemberById(memberId));
 	}
 	
 // Login으로 대체.	
@@ -39,13 +44,13 @@ public class MemberContoller {
 //	}
 	
 	@PutMapping("/{memberId}")
-	public ResponseEntity<?> updateMember(@PathVariable String memberId, @RequestBody Member member){
-		return ResponseEntity.ok(memberService.updateMember(memberId, member)); 
+	public ResponseEntity<MemberRead> update(@PathVariable String memberId, @RequestBody MemberUpdate member){
+		return ResponseEntity.ok(memberService.update(memberId, member)); 
 	}
 	
 	@DeleteMapping("/{memberId}")
-	public ResponseEntity<?> deleteMember(@PathVariable String memberId){
-		return ResponseEntity.ok(memberService.deleteMember(memberId));
+	public ResponseEntity<MemberRead> delete(@PathVariable String memberId){
+		return ResponseEntity.ok(memberService.delete(memberId));
 	}
 	
 }

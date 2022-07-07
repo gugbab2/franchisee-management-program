@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.biz.fm.domain.UploadFileResponse;
+import com.biz.fm.domain.dto.UploadFileResponse;
 import com.biz.fm.service.FileService;
 
 import lombok.AllArgsConstructor;

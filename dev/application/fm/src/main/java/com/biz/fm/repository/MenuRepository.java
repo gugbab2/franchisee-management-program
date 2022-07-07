@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.biz.fm.domain.Menu;
+import com.biz.fm.domain.entity.Menu;
 
 @Mapper
 public interface MenuRepository {
