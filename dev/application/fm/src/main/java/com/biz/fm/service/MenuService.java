@@ -1,11 +1,19 @@
 package com.biz.fm.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.biz.fm.domain.dto.MenuDto.MenuCreate;
+import com.biz.fm.domain.dto.MenuDto.MenuRead;
+import com.biz.fm.domain.dto.MenuDto.MenuUpdate;
 import com.biz.fm.domain.entity.Menu;
+import com.biz.fm.exception.custom.DeleteFailException;
+import com.biz.fm.exception.custom.InsertFailException;
+import com.biz.fm.exception.custom.UpdateFailException;
 import com.biz.fm.repository.MenuRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,32 +24,55 @@ public class MenuService {
 
 	private final MenuRepository menuRepository;
 	
-	public List<Menu> getList(){
-		return menuRepository.findAll();
+	public List<MenuRead> getList() throws NotFoundException{
+		List<Menu> menus = menuRepository.findAll();
+		if(menus.size() == 0) throw new NotFoundException(null);
+		
+		List<MenuRead> menusReads = new ArrayList<>();
+		for(Menu menu : menus) {
+			menusReads.add(menu.toMenuRead());
+		}
+		return menusReads;
 	}
 	
-	public List<Menu> listByBusinessNumber(String businessNumber){
-		return menuRepository.findBybusinessNumber(businessNumber);
+	public MenuRead getMenu(String memberId) throws NotFoundException {
+		Menu menu = menuRepository.findById(memberId);
+		if(menu == null) throw new NotFoundException(null);
+		return menu.toMenuRead();
 	}
 	
-	public Menu getMenu(String id) {
-		return menuRepository.findById(id);
+	public MenuRead insertMenu(MenuCreate menu) {
+		menu.setId(UUID.randomUUID().toString().replace("-", ""));
+		
+		int result = menuRepository.insert(menu);
+		if(result > 0) {
+			return menuRepository.findById(menu.getId()).toMenuRead();
+		}
+		else throw new InsertFailException();
 	}
 	
-	public Boolean insertMenu(Menu menu) {
-		menu.setId(UUID.randomUUID().toString());
-		return menuRepository.insert(menu) > 0 ? true : false;
-	}
-	
-	public Boolean updateMenu(String menuId, Menu menu) {
-		Menu oldMenu = this.getMenu(menuId);
+	public MenuRead updateMenu(String menuId, MenuUpdate menu) {
+		Menu oldMenu = menuRepository.findById(menuId);
+		if(oldMenu == null) throw new UpdateFailException();
+		
 		Menu newMenu = oldMenu.patch(menu);
 		
-		return menuRepository.update(newMenu) > 0 ? true : false;
+		int result = menuRepository.update(newMenu);
+		if(result > 0) {
+			return menuRepository.findById(menuId).toMenuRead();
+		}
+		else throw new UpdateFailException();
 	}
 
-	public Boolean deleteMenu(String id) {
-		return menuRepository.delete(id) > 0 ? true : false;
+	public MenuRead deleteMenu(String id) {
+		Menu menu = menuRepository.findById(id);
+		if(menu == null) throw new DeleteFailException();
+		
+		int result = menuRepository.delete(id);
+		if(result > 0) {
+			return menu.toMenuRead();
+		}
+		else throw new DeleteFailException();
 	}
 
 }

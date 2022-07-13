@@ -6,57 +6,75 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.biz.fm.domain.dto.FimageDto.FimageRead;
+import com.biz.fm.domain.dto.FranchiseeImageDto.FranchiseeimageRead;
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeCreate;
-import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeRead;
+import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeResponse;
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeUpdate;
-import com.biz.fm.service.FimageService;
 import com.biz.fm.service.FranchiseeService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 
+@Api(tags = {"2. Franchisee"})
 @RestController
 @RequestMapping("/api/franchisee")
 @RequiredArgsConstructor
 public class FranchiseeController {
 	
 	private final FranchiseeService franchiseeService;
-	private final FimageService fimageService;
 	
 	@GetMapping
-	public ResponseEntity<List<FranchiseeRead>> getList() throws NotFoundException{
-		 return ResponseEntity.ok(franchiseeService.findAll());
+	@ApiOperation(value = "반경으로 가맹점 조회", notes = "위도, 경도, 반경으로 가맹점을 조회한다.")
+	public ResponseEntity<List<FranchiseeResponse>> getListByDistance(@ApiParam(value = "경도", required = true) @RequestParam Double longitude, 
+																	@ApiParam(value = "위도", required = true) @RequestParam Double latitude, 
+																	@ApiParam(value = "반경") @RequestParam Integer radius) throws NotFoundException{
+		 return ResponseEntity.ok(franchiseeService.findAllByDistance(longitude, latitude, radius));
 	}
 	
-	@GetMapping("/images")
-	public ResponseEntity<List<FimageRead>> getByBusinessNumber(@RequestParam String businessNumber) throws NotFoundException{
-		return ResponseEntity.ok(fimageService.findAllByBusinessNumber(businessNumber));
+	@GetMapping("/{businessNumber}/images")
+	@ApiOperation(value = "가맹점 이미지 조회", notes = "가맹점에 등록된 모든 이미지를 조회한다.")
+	public ResponseEntity<List<FranchiseeimageRead>> getByBusinessNumber(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
+		return ResponseEntity.ok(franchiseeService.findAllByBusinessNumber(businessNumber));
 	}
 	
 	@GetMapping("/{businessNumber}")
-	public ResponseEntity<FranchiseeRead> get(@PathVariable String businessNumber) throws NotFoundException{
+	@ApiOperation(value = "가맹점 조회", notes = "사업자 번호로 가맹점을 조회한다.")
+	public ResponseEntity<FranchiseeResponse> get(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
 		return ResponseEntity.ok(franchiseeService.findByBusinessNumber(businessNumber));
 	}
 	
-	@GetMapping("/hours")
-	public ResponseEntity<?> getHours(@RequestParam String businessNumber) throws JsonMappingException, JsonProcessingException, NotFoundException{
+	@GetMapping("/{businessNumber}/menus")
+	@ApiOperation(value = "가맹점 메뉴 조회", notes = "사업자 번호를 통해 메뉴를 조회한다.")
+	public ResponseEntity<?> list(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
+		return ResponseEntity.ok(franchiseeService.findMenuByBusinessNumber(businessNumber));
+	}
+	
+	@GetMapping("/{businessNumber}/hours")
+	@ApiOperation(value = "가맹점 영업시간 조회", notes = "사업자 번호로 영업시간을 조회한다.")
+	public ResponseEntity<?> getHours(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws JsonMappingException, JsonProcessingException, NotFoundException{
 		return ResponseEntity.ok(franchiseeService.findHoursByBusinessNumber(businessNumber));
 	}
 	
 	@PostMapping
-	public ResponseEntity<FranchiseeRead> create(@RequestBody FranchiseeCreate franchiseeCreate){
+	@ApiOperation(value = "가맹점 등록", notes = "가맹점을 등록한다.")
+	public ResponseEntity<FranchiseeResponse> create(@ApiParam(value = "가맹점 정보", required = true) @RequestBody FranchiseeCreate franchiseeCreate){
 		return ResponseEntity.ok(franchiseeService.insert(franchiseeCreate));
 	}
 	
 	@PutMapping("/{businessNumber}")
-	public ResponseEntity<FranchiseeRead> update(@PathVariable String businessNumber, @RequestBody FranchiseeUpdate franchiseeUpdate){
+	@ApiOperation(value = "가맹점 수정", notes = "가맹점을 수정한다.")
+	public ResponseEntity<FranchiseeResponse> update(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber,
+												  @ApiParam(value = "가맹점 수정 정보", required = true) @RequestBody FranchiseeUpdate franchiseeUpdate){
 		return ResponseEntity.ok(franchiseeService.update(businessNumber, franchiseeUpdate));
 	}
 	
 	@DeleteMapping("/{businessNumber}")
-	public ResponseEntity<FranchiseeRead> delete(@PathVariable String businessNumber){
+	@ApiOperation(value = "가맹점 삭제", notes = "가맹점을 삭제한다.")
+	public ResponseEntity<FranchiseeResponse> delete(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber){
 		return ResponseEntity.ok(franchiseeService.delete(businessNumber));
 	}
 }

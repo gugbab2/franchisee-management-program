@@ -92,16 +92,12 @@
 		</dependency>
 		
 		<!-- swagger -->
-		<dependency>
-	        <groupId>io.springfox</groupId>
-	        <artifactId>springfox-swagger2</artifactId>
-	        <version>2.9.2</version>
-	    </dependency>
 	    <dependency>
-	        <groupId>io.springfox</groupId>
-	        <artifactId>springfox-swagger-ui</artifactId>
-	        <version>2.9.2</version>
-	    </dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-boot-starter</artifactId>
+		    <version>3.0.0</version>
+		</dependency>
+	    
 	    
 	    <!-- NoClassDefFoundError 해결을 위한 종속성 추가 -->
 		<dependency>
@@ -114,6 +110,13 @@
 		    <groupId>org.glassfish.jaxb</groupId>
 		    <artifactId>jaxb-runtime</artifactId>
 		    <version>2.3.2</version>
+		</dependency>
+		
+		<!-- // JSONParser, JSONObject설정 -->
+		<dependency>
+		    <groupId>com.googlecode.json-simple</groupId>
+		    <artifactId>json-simple</artifactId>
+		    <version>1.1.1</version>
 		</dependency>
 			
 	</dependencies>

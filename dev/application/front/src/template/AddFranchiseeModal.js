@@ -1,41 +1,126 @@
-import React, { useState } from 'react'
-import Modal from 'react-modal';
-import { Button } from 'react-bootstrap';
-import Addfranchisee from '../pages/AddFranchisee'
+import React, { useState, createContext } from "react";
+import { Button, Modal, ModalBody, ModalFooter } from "react-bootstrap";
+import Addfranchisee from "../pages/AddFranchisee";
+import AddMenu from "../pages/AddMenu";
+// import AddMenuModal from './AddMenuModal'
 
-export default function LoginModal() {
+export const franchiseeinfoContext = createContext();
 
-    const customStyles = {
-        content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        },
-    };
+export default function FrenchiseeModal({ modalShow }) {
+  const [businesscode, setBusinesscode] = useState();
+  const [franchiseename, setFranchiseename] = useState();
+  const [perspectname, setPerspectname] = useState();
+  const [postcode, setPostcode] = useState();
+  const [roadaddress, setRoadaddress] = useState();
+  const [jibunaddress, setJibunaddress] = useState();
+  const [detailaddress, setDetailaddress] = useState();
+  const [fulladdress, setFulladdress] = useState();
+  const [franchiseeintro, setFranchiseeintro] = useState();
 
-    const [mOpen,setmOpen] = useState(false);
-
-    function openModal(){
-        setmOpen(true);
+  const [menushow, setMenushow] = useState(false);
+  const menuClose = () => {
+    setMenushow(false);
+    if (true) {
+      setBusinesscode("");
+      setFranchiseename("");
+      setPerspectname("");
+      setPostcode("");
+      setRoadaddress("");
+      setJibunaddress("");
+      setDetailaddress("");
+      setFulladdress("");
+      setFranchiseeintro("");
     }
-    function closeModal(){
-        setmOpen(false);
+  };
+  const menuShow = () => setMenushow(true);
+  // const [franchiseshow, franchiseshowsetShow] = useState(false);
+  const handleClose = () => {
+    modalShow.setAddFrenShow(false);
+    if (true) {
+      setBusinesscode("");
+      setFranchiseename("");
+      setPerspectname("");
+      setPostcode("");
+      setRoadaddress("");
+      setJibunaddress("");
+      setDetailaddress("");
+      setFulladdress("");
+      setFranchiseeintro("");
     }
- 
+  };
+  const handleShow = () => modalShow.setAddFrenShow(true);
+
+  const nexthandle = () => {
+    modalShow.setAddFrenShow();
+    setMenushow(true);
+    parentFunction();
+  };
+  const backhandle = () => {
+    handleShow();
+    setMenushow(false);
+  };
+
+  const parentFunction = (businessChk) => {
+    if (businessChk == false) {
+      console.log("못감");
+    }
+  };
+
   return (
     <>
-        <Button onClick={openModal}>로그인</Button>
+      <franchiseeinfoContext.Provider
+        value={{
+          businesscode,
+          setBusinesscode,
+          franchiseename,
+          setFranchiseename,
+          perspectname,
+          setPerspectname,
+          postcode,
+          setPostcode,
+          roadaddress,
+          setRoadaddress,
+          jibunaddress,
+          setJibunaddress,
+          detailaddress,
+          setDetailaddress,
+          fulladdress,
+          setFulladdress,
+          franchiseeintro,
+          setFranchiseeintro,
+        }}
+      >
         <Modal
-            isOpen={mOpen}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel='example Modal'
+          show={modalShow.showAddFren}
+          onHide={handleClose}
+          keyboard={false}
+          centered
         >
-            <Addfranchisee></Addfranchisee>
+          <Modal.Header closeButton></Modal.Header>
+          <ModalBody>
+            <Addfranchisee parentFunction={parentFunction}></Addfranchisee>
+          </ModalBody>
+          <ModalFooter>
+            <button className="btn btn-primary" onClick={nexthandle}>
+              다음
+            </button>
+          </ModalFooter>
         </Modal>
+        <Modal show={menushow} onHide={menuClose} keyboard={false} centered>
+          <Modal.Header closeButton></Modal.Header>
+          <ModalBody>
+            <AddMenu></AddMenu>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="primary" onClick={backhandle}>
+              뒤로
+            </Button>
+            <button className="btn btn-primary" onClick={menuClose}>
+              입력
+            </button>
+          </ModalFooter>
+        </Modal>
+      </franchiseeinfoContext.Provider>
     </>
-  )
+  );
 }

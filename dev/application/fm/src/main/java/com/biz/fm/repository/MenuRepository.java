@@ -7,25 +7,26 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.biz.fm.domain.dto.MenuDto.MenuCreate;
 import com.biz.fm.domain.entity.Menu;
 
 @Mapper
 public interface MenuRepository {
-	@Select("select * from menu")
+	@Select("SELECT * FROM menu WHERE delete_date is null")
 	public List<Menu> findAll();
 	
-	@Select("select * from menu where id = #{id}")
+	@Select("SELECT * FROM menu WHERE id = #{id} and delete_date is null")
 	public Menu findById(String id);
 	
-	@Select("select * from menu where business_number = #{businessNumber}")
+	@Select("SELECT * FROM menu WHERE business_number = #{businessNumber} and delete_date is null")
 	public List<Menu> findBybusinessNumber(String businessNumber);
 	
-	@Insert("insert into menu values (#{id}, #{name}, #{price}, #{description}, #{imagePath}, #{businessNumber}, now(), null)")
-	public int insert(Menu menu);
+	@Insert("INSERT INTO menu VALUES (#{id}, #{name}, #{price}, #{description}, #{imagePath}, #{businessNumber}, now(), null)")
+	public int insert(MenuCreate menu);
 	
-	@Update("update menu set name = #{name}, price = #{price}, description = #{description}, image_path = #{imagePath} where id = #{id}")
+	@Update("UPDATE menu SET name = #{name}, price = #{price}, description = #{description}, image_path = #{imagePath} WHERE id = #{id}")
 	public int update(Menu menu);
 	
-	@Update("update menu set delete_Date = now() where id = #{id}")
+	@Update("UPDATE menu SET delete_Date = now() WHERE id = #{id}")
 	public int delete(String id);
 }

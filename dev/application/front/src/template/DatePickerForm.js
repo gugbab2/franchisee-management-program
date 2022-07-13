@@ -5,6 +5,7 @@ import {ko} from 'date-fns/esm/locale'
 import "react-datepicker/dist/react-datepicker.css"
 
 export default function DatePickerForm() {
+  
     const [startDate,setStartDate] = useState(new Date());
     const dateFunc = new Date();
     let firstDay = new Date(dateFunc.getMonth(),1)
@@ -12,13 +13,17 @@ export default function DatePickerForm() {
   return (
         <DatePicker
             dateFormat='yyyy-MM-dd'
+            className="input-datepicker"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
-            withPortal
+            // withPortal
             locale={ko}
             showMonthDropdown
             showYearDropdown
             dropdownMode="select"
+            
         />
   )
+
+ 
 }

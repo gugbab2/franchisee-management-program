@@ -3,7 +3,6 @@ package com.biz.fm.exception;
 import java.text.ParseException;
 
 import org.apache.ibatis.javassist.NotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,11 +10,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.biz.fm.exception.custom.DeleteFailException;
 import com.biz.fm.exception.custom.EmailDuplicationException;
+import com.biz.fm.exception.custom.ExpiredJwtException;
+import com.biz.fm.exception.custom.ForbiddenException;
 import com.biz.fm.exception.custom.InsertFailException;
+import com.biz.fm.exception.custom.InvalidEmailException;
 import com.biz.fm.exception.custom.InvalidPasswordException;
+import com.biz.fm.exception.custom.ReLogin;
+import com.biz.fm.exception.custom.UnAuthorizationException;
 import com.biz.fm.exception.custom.UpdateFailException;
-
-import lombok.extern.log4j.Log4j2;
+import com.biz.fm.exception.custom.UsernameOrPasswordNotFoundException;
 
 @RestControllerAdvice
 public class FmExceptionHandler {
@@ -33,6 +36,10 @@ public class FmExceptionHandler {
 	@ExceptionHandler(value = InvalidPasswordException.class)
 	public ResponseEntity<?> invalidPasswordException(InvalidPasswordException ex){
 		return getResponseEntity(ErrorCode.INVALID_PASSWORD);
+	}
+	@ExceptionHandler(value = InvalidEmailException.class)
+	public ResponseEntity<?> invalidIdException(InvalidEmailException ex){
+		return getResponseEntity(ErrorCode.INVALID_EMAIL);
 	}
 	
 	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
@@ -58,6 +65,31 @@ public class FmExceptionHandler {
 	@ExceptionHandler(value = DeleteFailException.class)
 	public ResponseEntity<?> deleteFailException(DeleteFailException ex){
 		return getResponseEntity(ErrorCode.DELETE_FAIL);
+	}
+	
+	@ExceptionHandler(value = UsernameOrPasswordNotFoundException.class)
+	public ResponseEntity<?> usernameOrPasswordNotFoundException(UsernameOrPasswordNotFoundException ex){
+		return getResponseEntity(ErrorCode.UsernameOrPasswordNotFoundException);
+	}
+	
+	@ExceptionHandler(value = ForbiddenException.class)
+	public ResponseEntity<?> forbiddenException(ForbiddenException ex){
+		return getResponseEntity(ErrorCode.ForbiddenException);
+	}
+	
+	@ExceptionHandler(value = UnAuthorizationException.class)
+	public ResponseEntity<?> unAuthorizationException(UnAuthorizationException ex){
+		return getResponseEntity(ErrorCode.UNAUTHORIZEDException);
+	}
+	
+	@ExceptionHandler(value = ExpiredJwtException.class)
+	public ResponseEntity<?> expiredJwtException(ExpiredJwtException ex){
+		return getResponseEntity(ErrorCode.ExpiredJwtException);
+	}
+	
+	@ExceptionHandler(value = ReLogin.class)
+	public ResponseEntity<?> reLogin(ReLogin ex){
+		return getResponseEntity(ErrorCode.ReLogin);
 	}
 	
 	private ResponseEntity<?> getResponseEntity(ErrorCode errorCode){

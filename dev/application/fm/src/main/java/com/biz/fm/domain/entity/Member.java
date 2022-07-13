@@ -10,11 +10,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.biz.fm.domain.dto.MemberDto.MemberRead;
 import com.biz.fm.domain.dto.MemberDto.MemberUpdate;
+import com.biz.fm.domain.dto.SignDto.SignIn;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class Member implements UserDetails{
 	
 	private String id;
@@ -33,24 +35,39 @@ public class Member implements UserDetails{
 	private String role;
 	private Integer phoneNumber;
 	private Date birth;
-	private String gender;
-	private String address;
+	private Address address;
 	private Timestamp createDate;
 	private Timestamp deleteDate;
 	
-	public Member patch(MemberUpdate requestMember) {
-		
-		if(requestMember.getPassword() != null) this.setPassword(requestMember.getPassword());
-		if(requestMember.getRole() != null) this.setRole(requestMember.getRole());
-		if(requestMember.getPhoneNumber() != null) this.setPhoneNumber(requestMember.getPhoneNumber());
-		if(requestMember.getAddress() != null) this.setAddress(requestMember.getAddress());
-		
-		return this;
+	public MemberRead toMemberRead() {
+		return MemberRead.builder()
+				.id(id)
+				.name(name)
+				.email(email)
+				.phoneNumber(phoneNumber)
+				.address(address)
+				.createDate(createDate)
+				.build();
 	}
-
+	
+	public MemberUpdate toMemberUpdate() {
+		return MemberUpdate.builder()
+				.role(role)
+				.phoneNumber(phoneNumber)
+				.addressId(address.getId())
+				.build();
+	}
+	
+	public SignIn toMemberSignIn() {
+		return SignIn.builder()
+				.email(email)
+				.password(password)
+				.build();
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> list = new ArrayList<>();
+		List<GrantedAuthority> list = new ArrayList<>();
 		list.add(new SimpleGrantedAuthority(this.role));
 		return list;
 	}
@@ -83,10 +100,4 @@ public class Member implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
-	
 }
-
-
-
-
-

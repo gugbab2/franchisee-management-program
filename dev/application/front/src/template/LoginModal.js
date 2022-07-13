@@ -1,41 +1,25 @@
-import React, { useState } from 'react'
-import Modal from 'react-modal';
-import Login from '../pages/Login';
-import { Button } from 'react-bootstrap';
+import React, { useContext, useState } from "react";
+import Login from "../pages/Login";
+import { Modal, ModalBody, Button } from "react-bootstrap";
+import {loginCreateContext} from './SearchBar'
 
 export default function LoginModal() {
-
-    const customStyles = {
-        content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        },
-    };
-
-    const [mOpen,setmOpen] = useState(false);
-
-    function openModal(){
-        setmOpen(true);
-    }
-    function closeModal(){
-        setmOpen(false);
-    }
- 
+  const loginmodalHandler = useContext(loginCreateContext)
+  const handleClose = () => loginmodalHandler.setLoginShow(false);
   return (
     <>
-        <Button onClick={openModal}>로그인</Button>
-        <Modal
-            isOpen={mOpen}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel='example Modal'
-        >
-            <Login></Login>
-        </Modal>
+      <Modal
+        style={{
+          marginTop: "10%",
+        }}
+        show={loginmodalHandler.showLogin}
+        onHide={handleClose}
+        keyboard={false}
+      >
+        <ModalBody>
+          <Login></Login>
+        </ModalBody>
+      </Modal>
     </>
-  )
+  );
 }
