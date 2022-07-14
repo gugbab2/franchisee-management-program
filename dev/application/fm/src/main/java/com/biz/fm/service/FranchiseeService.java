@@ -12,7 +12,8 @@ import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeResponse;
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeUpdate;
 import com.biz.fm.domain.dto.FranchiseeDto.Hours;
 import com.biz.fm.domain.dto.FranchiseeImageDto.FranchiseeimageRead;
-import com.biz.fm.domain.dto.MenuDto.MenuRead;
+import com.biz.fm.domain.dto.MenuDto.MenuCreate;
+import com.biz.fm.domain.dto.MenuDto.MenuResponse;
 import com.biz.fm.domain.entity.Address;
 import com.biz.fm.domain.entity.Franchisee;
 import com.biz.fm.domain.entity.Franchiseeimage;
@@ -76,11 +77,11 @@ public class FranchiseeService {
 		return franchisee.toFranchiseeResponse();
 	}
 	
-	public List<MenuRead> findMenuByBusinessNumber(String businessNumber) throws NotFoundException{
+	public List<MenuResponse> findMenuByBusinessNumber(String businessNumber) throws NotFoundException{
 		List<Menu> menus = menuRepository.findBybusinessNumber(businessNumber);
 		if(menus.size() == 0) throw new NotFoundException(null);
 		
-		List<MenuRead> menusReads = new ArrayList<>();
+		List<MenuResponse> menusReads = new ArrayList<>();
 		for(Menu menu : menus) {
 			menusReads.add(menu.toMenuRead());
 		}
@@ -142,6 +143,24 @@ public class FranchiseeService {
 	        return false;
 	    }
 	    return true;
+	}
+	
+	public MenuResponse insertMenu(String businessNumber, MenuCreate menuCreate) {
+		
+		Menu menu = Menu.builder()
+				.id(UUID.randomUUID().toString().replace("-", ""))
+				.name(menuCreate.getName())
+				.description(menuCreate.getDescription())
+				.imagePath(menuCreate.getImagePath())
+				.businessNumber(businessNumber)
+				.price(menuCreate.getPrice())
+				.build();
+		
+		int result = menuRepository.insert(menu);
+		if(result > 0) {
+			return menuRepository.findById(menu.getId()).toMenuRead();
+		}
+		else throw new InsertFailException();
 	}
 	
 	public FranchiseeResponse update(String businessNumber, FranchiseeUpdate franchisee) {

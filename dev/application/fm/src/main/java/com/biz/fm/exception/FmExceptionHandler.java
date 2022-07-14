@@ -15,6 +15,7 @@ import com.biz.fm.exception.custom.ForbiddenException;
 import com.biz.fm.exception.custom.InsertFailException;
 import com.biz.fm.exception.custom.InvalidEmailException;
 import com.biz.fm.exception.custom.InvalidPasswordException;
+import com.biz.fm.exception.custom.Logout;
 import com.biz.fm.exception.custom.ReLogin;
 import com.biz.fm.exception.custom.UnAuthorizationException;
 import com.biz.fm.exception.custom.UpdateFailException;
@@ -90,6 +91,11 @@ public class FmExceptionHandler {
 	@ExceptionHandler(value = ReLogin.class)
 	public ResponseEntity<?> reLogin(ReLogin ex){
 		return getResponseEntity(ErrorCode.ReLogin);
+	}
+	
+	@ExceptionHandler(value = Logout.class)
+	public ResponseEntity<?> logout(Logout ex){
+		return getResponseEntity(ErrorCode.Logout);
 	}
 	
 	private ResponseEntity<?> getResponseEntity(ErrorCode errorCode){

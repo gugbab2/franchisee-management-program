@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeResponse;
-import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.MemberResponse;
 import com.biz.fm.domain.dto.MemberDto.MemberUpdate;
 import com.biz.fm.domain.entity.Application;
 import com.biz.fm.service.MemberService;
@@ -31,11 +31,11 @@ public class MemberContoller {
 
 	private final MemberService memberService;
 	
-//	@GetMapping("/{memberId}")
-//	@ApiOperation(value = "유저 조회", notes = "유저 id를 통해 유저 조회한다.")
-//	public ResponseEntity<MemberRead> get(@ApiParam(value = "유저 id", required = true) @PathVariable String memberId) throws NotFoundException{
-//		return ResponseEntity.ok(memberService.getMemberById(memberId));
-//	}
+	@GetMapping("/{memberId}")
+	@ApiOperation(value = "유저 조회", notes = "유저 id를 통해 유저 조회한다.")
+	public ResponseEntity<MemberResponse> get(@ApiParam(value = "유저 id", required = true) @PathVariable String memberId) throws NotFoundException{
+		return ResponseEntity.ok(memberService.getMemberById(memberId));
+	}
 	
 	@GetMapping("/{memberId}/application")
 	@ApiOperation(value = "앱 조회", notes = "사용자 id로 앱을 조회한다.")
@@ -51,14 +51,14 @@ public class MemberContoller {
 	
 	@PutMapping("/{memberId}")
 	@ApiOperation(value = "유저 수정", notes = "유저 정보를 수정한다.")
-	public ResponseEntity<MemberRead> update(@ApiParam(value = "유저 id", required = true) @PathVariable String memberId, 
+	public ResponseEntity<MemberResponse> update(@ApiParam(value = "유저 id", required = true) @PathVariable String memberId, 
 											  @ApiParam(value = "유저 수정 정보", required = true) @RequestBody MemberUpdate memberUpdate){
 		return ResponseEntity.ok(memberService.update(memberId, memberUpdate)); 
 	}
 	
 	@DeleteMapping("/{memberId}")
 	@ApiOperation(value = "유저 삭제", notes = "유저를 삭제한다.")
-	public ResponseEntity<MemberRead> delete(@ApiParam(value = "유저 id", required = true) @PathVariable String memberId){
+	public ResponseEntity<MemberResponse> delete(@ApiParam(value = "유저 id", required = true) @PathVariable String memberId){
 		return ResponseEntity.ok(memberService.delete(memberId));
 	}
 }

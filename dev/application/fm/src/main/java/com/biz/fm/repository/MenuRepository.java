@@ -22,7 +22,7 @@ public interface MenuRepository {
 	public List<Menu> findBybusinessNumber(String businessNumber);
 	
 	@Insert("INSERT INTO menu VALUES (#{id}, #{name}, #{price}, #{description}, #{imagePath}, #{businessNumber}, now(), null)")
-	public int insert(MenuCreate menu);
+	public int insert(Menu menu);
 	
 	@Update("UPDATE menu SET name = #{name}, price = #{price}, description = #{description}, image_path = #{imagePath} WHERE id = #{id}")
 	public int update(Menu menu);

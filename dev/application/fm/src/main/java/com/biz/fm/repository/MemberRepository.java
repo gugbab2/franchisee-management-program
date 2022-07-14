@@ -49,7 +49,7 @@ public interface MemberRepository {
 			+ "(#{id}, #{name}, #{email}, #{password}, #{role}, #{phoneNumber}, #{birth}, #{addressId}, now(), null)")
 	public int insert(MemberUp member);
 	
-	@Update("UPDATE member SET role = #{member.role}, phone_number = #{member.phoneNumber}, address_id = #{member.addressId} "
+	@Update("UPDATE member SET role = #{member.role}, phone_number = #{member.phoneNumber} "
 			+ "WHERE id = #{id}")
 	public int update(@Param("id") String id, @Param("member") MemberUpdate member);
 

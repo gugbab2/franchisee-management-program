@@ -11,7 +11,7 @@ import PrivateRoute from "./lib/PrivateRoute";
 import LoginModal from "./template/LoginModal";
 
 function App() {
-  //   axios.defaults.baseURL = "api.odcloud.kr/api/nts-businessman/v1";
+    // axios.defaults.baseURL = "api.odcloud.kr/api/nts-businessman/v1";
   return (
     <BrowserRouter>
       <Routes>

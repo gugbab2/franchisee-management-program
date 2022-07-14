@@ -33,12 +33,6 @@ public class MenuController {
 		return ResponseEntity.ok(menuService.getMenu(id));
 	}
 	
-	@PostMapping
-	@ApiOperation(value = "메뉴 등록", notes = "메뉴를 등록한다.")
-	public ResponseEntity<?> add(@ApiParam(value = "메뉴 정보", required = true) @RequestBody MenuCreate menu){
-		return ResponseEntity.ok(menuService.insertMenu(menu));
-	}
-	
 	@PutMapping("/{menuId}")
 	@ApiOperation(value = "메뉴 수정", notes = "메뉴를 수정한다.")
 	public ResponseEntity<?> update(@ApiParam(value = "메뉴 id", required = true) @PathVariable String menuId,

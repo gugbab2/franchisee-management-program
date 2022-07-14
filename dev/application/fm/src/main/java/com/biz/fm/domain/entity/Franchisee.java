@@ -48,6 +48,7 @@ public class Franchisee {
 				.tel(tel)
 				.ownerName(owner.getName())
 				.intro(intro)
+				.hours(hours)
 				.createDate(createDate)
 				.build();
 	}

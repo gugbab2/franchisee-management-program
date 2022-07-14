@@ -27,6 +27,7 @@ public enum ErrorCode {
     UNAUTHORIZEDException (HttpStatus.UNAUTHORIZED, "T003","로그인 후 이용가능합니다."),
     ExpiredJwtException(HttpStatus.UNAUTHORIZED, "T004", "기존 토큰이 만료되었습니다. 해당 토큰을 가지고 get-newtoken링크로 이동해주세요."),
     ReLogin(HttpStatus.UNAUTHORIZED, "T005","모든 토큰이 만료되었습니다. 다시 로그인해주세요."),
+    Logout(HttpStatus.FORBIDDEN, "T006", "해당 요청에 대한 권한이 없습니다. 로그아웃 해주세요.")
 	;
 	
 	private final HttpStatus status;

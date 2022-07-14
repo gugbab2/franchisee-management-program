@@ -1,7 +1,7 @@
 package com.biz.fm.domain.dto;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +12,7 @@ public class MenuDto {
 	@Getter
 	@Setter
 	@Builder
-	public static class MenuRead{
+	public static class MenuResponse{
 		private String id;
 		private String name;
 		private String description; 
@@ -28,17 +28,16 @@ public class MenuDto {
 		private String description; 
 		private String imagePath;
 		private Integer price;
-		
 	}
 	
 	@Getter
 	@Setter
 	public static class MenuCreate{
+		@JsonProperty(access = Access.WRITE_ONLY)
 		private String id;
 		private String name;
 		private String description; 
 		private String imagePath;
-		private String businessNumber;
 		private Integer price;
 	}
 	

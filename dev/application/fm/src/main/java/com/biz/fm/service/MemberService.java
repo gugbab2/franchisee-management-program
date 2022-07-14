@@ -8,15 +8,17 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeResponse;
-import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.MemberResponse;
 import com.biz.fm.domain.dto.MemberDto.MemberUp;
 import com.biz.fm.domain.dto.MemberDto.MemberUpdate;
+import com.biz.fm.domain.entity.Address;
 import com.biz.fm.domain.entity.Application;
 import com.biz.fm.domain.entity.Franchisee;
 import com.biz.fm.domain.entity.Member;
 import com.biz.fm.exception.custom.DeleteFailException;
 import com.biz.fm.exception.custom.InsertFailException;
 import com.biz.fm.exception.custom.UpdateFailException;
+import com.biz.fm.repository.AddressRepository;
 import com.biz.fm.repository.ApplicationRepository;
 import com.biz.fm.repository.FranchiseeRepository;
 import com.biz.fm.repository.MemberRepository;
@@ -29,26 +31,27 @@ public class MemberService {
 	
 	private final MemberRepository memberRepository;
 	private final FranchiseeRepository franchiseeRepository;
+	private final AddressRepository addressRepository;
 	private final ApplicationRepository applicationRepository;
 	
-	public List<MemberRead> getList() throws NotFoundException{
+	public List<MemberResponse> getList() throws NotFoundException{
 		List<Member> members = memberRepository.findAll();
 		if(members.size() == 0) throw new NotFoundException(null);
 		
-		List<MemberRead> memberReads = new ArrayList<>();
+		List<MemberResponse> memberReads = new ArrayList<>();
 		for(Member member : members) {
 			memberReads.add(member.toMemberRead());
 		}
 		return memberReads;
 	}
 	
-	public MemberRead getMemberById(String memberId) throws NotFoundException {
+	public MemberResponse getMemberById(String memberId) throws NotFoundException {
 		Member member = memberRepository.findById(memberId);
 		if(member == null) throw new NotFoundException(null);
 		return member.toMemberRead();
 	}
 	
-	public MemberRead getMemberByEmail(String email) throws NotFoundException {
+	public MemberResponse getMemberByEmail(String email) throws NotFoundException {
 		Member member = memberRepository.findByEmail(email);
 		if(member == null) throw new NotFoundException(null);
 		return member.toMemberRead();
@@ -76,7 +79,7 @@ public class MemberService {
 		return apps;
 	}
 	
-	public MemberRead insert(MemberUp member) {
+	public MemberResponse insert(MemberUp member) {
 		member.setId(UUID.randomUUID().toString().replace("-", ""));
 		
 		int result = memberRepository.insert(member);
@@ -86,9 +89,13 @@ public class MemberService {
 		else throw new InsertFailException();
 	}
 	
-	public MemberRead update(String memberId, MemberUpdate memberUpdate) {
+	public MemberResponse update(String memberId, MemberUpdate memberUpdate) {
 		Member oldMember = memberRepository.findById(memberId);
 		if(oldMember == null) throw new UpdateFailException();
+		
+		Address address = addressRepository.findById(oldMember.getAddress().getId());
+		address.patch(memberUpdate.getAddress());
+		addressRepository.update(address);
 		
 		memberUpdate.patch(oldMember);
 		
@@ -99,7 +106,7 @@ public class MemberService {
 		else throw new UpdateFailException();
 	}
 
-	public MemberRead delete(String memberId) {
+	public MemberResponse delete(String memberId) {
 		Member member = memberRepository.findById(memberId);
 		if(member == null) throw new DeleteFailException();
 		

@@ -2,7 +2,7 @@ package com.biz.fm.domain.dto;
 
 import java.sql.Timestamp;
 
-import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.MemberResponse;
 import com.biz.fm.domain.entity.Address;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -27,6 +27,7 @@ public class FranchiseeDto {
 		private String tel;
 		private String ownerName;
 		private String intro;
+		private String hours;
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 		private Timestamp createDate;
 	}

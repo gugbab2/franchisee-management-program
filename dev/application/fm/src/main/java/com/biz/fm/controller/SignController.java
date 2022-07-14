@@ -1,7 +1,6 @@
 package com.biz.fm.controller;
 
 import java.text.ParseException;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.MemberResponse;
 import com.biz.fm.domain.dto.RefreshTokenDto;
 import com.biz.fm.domain.dto.SignDto.SignIn;
 import com.biz.fm.domain.dto.SignDto.SignInfo;
@@ -39,7 +38,7 @@ public class SignController {
 	public ResponseEntity<?> signup(
 			@ApiParam(value = "회원가입 정보", required = true) @RequestBody SignUp signUpInfo) throws ParseException {
 
-		MemberRead result = signService.signUp(signUpInfo);
+		MemberResponse result = signService.signUp(signUpInfo);
 		return ResponseEntity.ok(result);
 	}
 	
@@ -51,6 +50,7 @@ public class SignController {
 		return ResponseEntity.ok(signService.signIn(signInInfo));
 	}
 	
+	@CrossOrigin
 	@PostMapping("/signout")
 	@ApiOperation(value = "로그아웃", notes = "회원 로그아웃 한다.")
 	public ResponseEntity<?> signout(
@@ -58,6 +58,7 @@ public class SignController {
 		return ResponseEntity.ok(signService.signOut(signOutInfo.getEmail()));
 	}
 	
+	@CrossOrigin
 	@PostMapping("/get-newToken")
 	@ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급한다")
     public ResponseEntity<?> newAccessToken(

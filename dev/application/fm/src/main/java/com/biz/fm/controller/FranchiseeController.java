@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.biz.fm.domain.dto.FranchiseeImageDto.FranchiseeimageRead;
+import com.biz.fm.domain.dto.MenuDto.MenuCreate;
+import com.biz.fm.domain.dto.MenuDto.MenuResponse;
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeCreate;
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeResponse;
 import com.biz.fm.domain.dto.FranchiseeDto.FranchiseeUpdate;
@@ -35,12 +37,6 @@ public class FranchiseeController {
 		 return ResponseEntity.ok(franchiseeService.findAllByDistance(longitude, latitude, radius));
 	}
 	
-	@GetMapping("/{businessNumber}/images")
-	@ApiOperation(value = "가맹점 이미지 조회", notes = "가맹점에 등록된 모든 이미지를 조회한다.")
-	public ResponseEntity<List<FranchiseeimageRead>> getByBusinessNumber(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
-		return ResponseEntity.ok(franchiseeService.findAllByBusinessNumber(businessNumber));
-	}
-	
 	@GetMapping("/{businessNumber}")
 	@ApiOperation(value = "가맹점 조회", notes = "사업자 번호로 가맹점을 조회한다.")
 	public ResponseEntity<FranchiseeResponse> get(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
@@ -49,8 +45,14 @@ public class FranchiseeController {
 	
 	@GetMapping("/{businessNumber}/menus")
 	@ApiOperation(value = "가맹점 메뉴 조회", notes = "사업자 번호를 통해 메뉴를 조회한다.")
-	public ResponseEntity<?> list(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
+	public ResponseEntity<List<MenuResponse>> list(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
 		return ResponseEntity.ok(franchiseeService.findMenuByBusinessNumber(businessNumber));
+	}
+	
+	@GetMapping("/{businessNumber}/images")
+	@ApiOperation(value = "가맹점 이미지 조회", notes = "가맹점에 등록된 모든 이미지를 조회한다.")
+	public ResponseEntity<List<FranchiseeimageRead>> getByBusinessNumber(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNumber) throws NotFoundException{
+		return ResponseEntity.ok(franchiseeService.findAllByBusinessNumber(businessNumber));
 	}
 	
 	@GetMapping("/{businessNumber}/hours")
@@ -63,6 +65,13 @@ public class FranchiseeController {
 	@ApiOperation(value = "가맹점 등록", notes = "가맹점을 등록한다.")
 	public ResponseEntity<FranchiseeResponse> create(@ApiParam(value = "가맹점 정보", required = true) @RequestBody FranchiseeCreate franchiseeCreate){
 		return ResponseEntity.ok(franchiseeService.insert(franchiseeCreate));
+	}
+	
+	@PostMapping("/{businessNuber}/menu")
+	@ApiOperation(value = "메뉴 등록", notes = "메뉴를 등록한다.")
+	public ResponseEntity<?> add(@ApiParam(value = "사업자 번호", required = true) @PathVariable String businessNuber,
+								  @ApiParam(value = "메뉴 정보", required = true) @RequestBody MenuCreate menu){
+		return ResponseEntity.ok(franchiseeService.insertMenu(businessNuber, menu));
 	}
 	
 	@PutMapping("/{businessNumber}")

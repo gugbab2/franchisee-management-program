@@ -45,7 +45,7 @@ public class MemberDto {
 	@Getter
 	@Setter
 	@Builder
-	public static class MemberRead{
+	public static class MemberResponse{
 		private String id;
 		private String name;
 		private String email;
@@ -63,13 +63,12 @@ public class MemberDto {
 	public static class MemberUpdate{
 		private String role;
 		private Integer phoneNumber;
-		private String addressId;
+		private Address address;
 		
 		public MemberUpdate patch(Member Member) {
 			
 			if(this.getRole() == null) this.setRole(Member.getRole());
 			if(this.getPhoneNumber() == null) this.setPhoneNumber(Member.getPhoneNumber());
-			if(this.getAddressId() == null) this.setAddressId(Member.getAddress().getId());
 			
 			return this;
 		}

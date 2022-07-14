@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.MemberResponse;
 import com.biz.fm.domain.dto.MemberDto.MemberUpdate;
 import com.biz.fm.domain.dto.SignDto.SignIn;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,22 +39,14 @@ public class Member implements UserDetails{
 	private Timestamp createDate;
 	private Timestamp deleteDate;
 	
-	public MemberRead toMemberRead() {
-		return MemberRead.builder()
+	public MemberResponse toMemberRead() {
+		return MemberResponse.builder()
 				.id(id)
 				.name(name)
 				.email(email)
 				.phoneNumber(phoneNumber)
 				.address(address)
 				.createDate(createDate)
-				.build();
-	}
-	
-	public MemberUpdate toMemberUpdate() {
-		return MemberUpdate.builder()
-				.role(role)
-				.phoneNumber(phoneNumber)
-				.addressId(address.getId())
 				.build();
 	}
 	

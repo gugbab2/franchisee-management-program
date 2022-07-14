@@ -33,11 +33,10 @@ function LoginFormDesign() {
       }
     }).then(function (response){
       loginmodalHandler.setLoginShow(false)
-      console.log(response.data.accessToken)
       localStorage.setItem('Authorization',response.data.accessToken)
+      axios.defaults.headers.common['Authorization'] = response.data.accessToken
     })
   }
-
 
   return (
     <Container>

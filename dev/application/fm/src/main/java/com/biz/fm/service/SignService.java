@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.biz.fm.domain.dto.MemberDto.MemberRead;
+import com.biz.fm.domain.dto.MemberDto.MemberResponse;
 import com.biz.fm.domain.dto.MemberDto.MemberUp;
 import com.biz.fm.domain.dto.RefreshTokenDto;
 import com.biz.fm.domain.dto.SignDto.SignIn;
@@ -24,6 +24,7 @@ import com.biz.fm.exception.custom.EmailDuplicationException;
 import com.biz.fm.exception.custom.ExpiredJwtException;
 import com.biz.fm.exception.custom.InvalidEmailException;
 import com.biz.fm.exception.custom.InvalidPasswordException;
+import com.biz.fm.exception.custom.Logout;
 import com.biz.fm.exception.custom.ReLogin;
 import com.biz.fm.exception.custom.UnAuthorizationException;
 import com.biz.fm.repository.AddressRepository;
@@ -48,7 +49,7 @@ public class SignService {
 	ErrorCode errorCode;
 	
 	//회원가입
-	public MemberRead signUp(SignUp signUpinfo) throws ParseException {
+	public MemberResponse signUp(SignUp signUpinfo) throws ParseException {
 		
 		boolean result = this.isDuplicate(signUpinfo.getEmail());
 		if(result) throw new EmailDuplicationException();
@@ -68,7 +69,7 @@ public class SignService {
 								.addressId(address.getId())
 								.build();
 
-		MemberRead memberRead =  memberService.insert(newMember);
+		MemberResponse memberRead =  memberService.insert(newMember);
 		
 		return memberRead;
 	}
@@ -141,7 +142,7 @@ public class SignService {
                 .build();
         
         //토큰 이메일 중복확인
-		if (tokenRepository.findByEmail(insertRefreshToken.getEmail()) != null) throw new ReLogin(); 
+		if (tokenRepository.findByEmail(insertRefreshToken.getEmail()) != null) throw new Logout(); 
         
         //토큰 데이터베이스에 토큰 정보를 입력하고
         tokenRepository.insert(insertRefreshToken);
