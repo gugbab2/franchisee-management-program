@@ -3,8 +3,11 @@ package com.biz.fm.domain.dto;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+import javax.validation.constraints.Size;
+
 import com.biz.fm.domain.entity.Address;
 import com.biz.fm.domain.entity.Member;
+import com.biz.fm.utils.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +24,7 @@ public class MemberDto {
 		private String id;
 		private String name;
 		private String email;
-		private Integer phoneNumber;
+		private String phoneNumber;
 	}
 	
 	@Getter
@@ -35,10 +38,10 @@ public class MemberDto {
 		private String name;
 		private String email;
 		private String password;
-		private String role;
-		private Integer phoneNumber;
+		private String phoneNumber;
 		@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
 		private Date birth;
+		private Role role;
 		private String addressId;
 	}
 	
@@ -49,7 +52,7 @@ public class MemberDto {
 		private String id;
 		private String name;
 		private String email;
-		private Integer phoneNumber;
+		private String phoneNumber;
 		private Address address;
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 		private Timestamp createDate;
@@ -61,13 +64,12 @@ public class MemberDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class MemberUpdate{
-		private String role;
-		private Integer phoneNumber;
+		@Size(min = 11, max = 11, message = "전화번호는 11 자리여야 합니다.")
+		private String phoneNumber;
 		private Address address;
 		
 		public MemberUpdate patch(Member Member) {
 			
-			if(this.getRole() == null) this.setRole(Member.getRole());
 			if(this.getPhoneNumber() == null) this.setPhoneNumber(Member.getPhoneNumber());
 			
 			return this;

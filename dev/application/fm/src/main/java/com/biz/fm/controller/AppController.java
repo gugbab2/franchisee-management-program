@@ -2,6 +2,7 @@ package com.biz.fm.controller;
 
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,18 +23,19 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = {"7. API"})
+@Api(tags = {"7. App"})
 @RestController
-@RequestMapping("/api/Application")
+@RequestMapping("/api/v1/application")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AppController {
 	
 	private final ApplicationService appService;
 	
-	@GetMapping("/{appId}")
-	@ApiOperation(value = "앱 조회", notes = "앱 아이디를 통해서 조회한다.")
+	@GetMapping("/one/{appId}")
+	@ApiOperation(value = "앱 단일 조회", notes = "App 아이디를 통해서 조회한다.")
 	public ResponseEntity<?> selectOne(@ApiParam(value = "앱 조회 정보", required = true) @PathVariable String appId) throws NotFoundException{
-		return ResponseEntity.ok(appService.getApp(appId));
+		return ResponseEntity.ok(appService.getAppOne(appId));
 	}
 	
 	@PostMapping
@@ -44,7 +46,7 @@ public class AppController {
 	
 	@PutMapping("/name")
 	@ApiOperation(value = "앱 이름 수정", notes = "앱을 이름을 수정한다.")
-	public ResponseEntity<?> nameUpdate(@ApiParam(value = "앱 이름 수정 정보", required = true) @RequestBody AppUpdateName appUpdateName){
+	public ResponseEntity<?> nameUpdate(@ApiParam(value = "앱 이름 수정 정보", required = true) @RequestBody AppUpdateName appUpdateName) throws NotFoundException{
 		return ResponseEntity.ok(appService.nameUpdate(appUpdateName));
 	}
 	

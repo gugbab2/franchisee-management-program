@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 
 import com.biz.fm.exception.ErrorCode;
 
+//access 권한 없는 페이지에 접속했을 때 발생되는 AccessDeniedException을 처리
 @Component
 public class WebAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        ErrorCode errorCode = ErrorCode.ForbiddenException;
+        ErrorCode errorCode = ErrorCode.FORBIDDEN_EXCEPTION;
 
         response.setContentType("application/json;charset=UTF-8");
         response.setCharacterEncoding("utf-8");

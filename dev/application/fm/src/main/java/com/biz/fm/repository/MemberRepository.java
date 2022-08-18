@@ -1,7 +1,9 @@
 package com.biz.fm.repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.One;
@@ -28,9 +30,9 @@ public interface MemberRepository {
 			@Result(property = "name", column = "member_name"),
 			@Result(property = "email", column = "email"),
 			@Result(property = "password", column = "password"),
-			@Result(property = "role", column = "role"),
 			@Result(property = "phoneNumber", column = "phone_number"),
 			@Result(property = "birth", column = "birth"),
+			@Result(property = "role", column = "role"),
 			@Result(property = "createDate", column = "create_date"),
 			@Result(property = "deleteDate", column = "delete_date"),
 			@Result(property = "address", column = "address_id", one = @One(resultMap = "com.biz.fm.repository.AddressRepository.AddressEntityMap"))
@@ -38,24 +40,33 @@ public interface MemberRepository {
 	public Member findById(String Id);
 	
 	@Select("SELECT * FROM member m JOIN address a ON m.address_id = a.id WHERE email = #{email} AND delete_date is null")
-//	@ResultMap("MemberEntityMap")
 	public Member findByEmail(String email);
+	
+//	@Select("SELECT delete_date FROM member WHERE email = #{email}")
+//	public Timestamp findByEmailForDeleteDate(String email);
+	
+	@Select("SELECT * FROM member WHERE email = #{email}")
+	public Member findByEmailForValidation(String email);
 	
 	@Select("SELECT * FROM member m JOIN address a ON m.address_id = a.id WHERE password = #{password} AND delete_date is null")
 	@ResultMap("MemberEntityMap")
 	public Member findByPassword(String password);
 
 	@Insert("INSERT INTO member VALUES "
-			+ "(#{id}, #{name}, #{email}, #{password}, #{role}, #{phoneNumber}, #{birth}, #{addressId}, now(), null)")
+			+ "(#{id}, #{name}, #{email}, #{password}, #{phoneNumber}, #{birth}, #{role}, #{addressId}, now(), null)")
 	public int insert(MemberUp member);
 	
-	@Update("UPDATE member SET role = #{member.role}, phone_number = #{member.phoneNumber} "
+	@Update("UPDATE member SET phone_number = #{member.phoneNumber} "
 			+ "WHERE id = #{id}")
 	public int update(@Param("id") String id, @Param("member") MemberUpdate member);
-
-	@Update("UPDATE member SET delete_Date = now() WHERE id = #{id}")
-	public int delete(String id);
-
 	
+	@Update("UPDATE member SET password = #{password} WHERE id = #{id}")
+	public int updatePassword(String id, String password);
+	
+	@Update("UPDATE member SET role = #{role} WHERE id = #{id}")
+	public int updateRole(String id, String role);
+
+	@Delete("DELETE FROM member WHERE id = #{id}")
+	public int delete(String id);
 	
 }

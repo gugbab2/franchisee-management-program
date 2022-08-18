@@ -1,175 +1,126 @@
-import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Image,
-  Button,
-  Table,
-  Form,
-} from "react-bootstrap";
-import Header from "../template/Header";
+import React, { createContext, useEffect, useState } from "react";
+import { Container, Accordion, Nav, NavLink } from "react-bootstrap";
+import MainHeader from "../template/MainHeader";
 import Footer from "../template/Footer";
-import DatePickerForm from "../template/DatePickerForm";
-import { FaChevronRight } from "react-icons/fa";
 import "../css/BusinessList.css";
+import BusinessListForm from "../template/BusinessListForm";
+import { instance } from "../template/AxiosConfig/AxiosInterceptor";
 
-function BusinessListForm(props) {
-  return (
-    <>
-      <Container
-        className="BusinessList--Container"
-        style={{
-          marginTop: "40px",
-        }}
-      >
-        <Row className="BusinessList--Row" style={{ padding: "30px" }}>
-          <Col></Col>
-          <Col>
-            <h1 id="BusinessList--Row__Header">사업장</h1>
-            <Form.Select
-              aria-label="Default select example"
-              className="BusinessList--Row__ColText"
+export const BlmodalControllerContext = createContext();
+
+function BusinessListAccordian() {
+    // 마이페이지에서 가맹점리스트 Link to에서 쿼리로 idx값을 가져와서 아코디언 오픈
+    let acodionNum = window.location.search;
+
+    const [franList, setFranList] = useState("");
+    const [franChk, setFranChk] = useState();
+
+    //createContext()에 대한 넒길 정보 useState
+    const [showAddFrenModal, setAddFrenModalShow] = useState(false);
+
+    const [list, setList] = useState([]);
+    useEffect(() => {
+        instance({
+            method: "get",
+            url: `/member/` + localStorage.getItem("userId") + `/franchisee`,
+        }).then(function (res) {
+            if (res.data.length !== 0) {
+                setFranChk(false);
+            } else {
+                setFranChk(true);
+            }
+            setFranList(res.data);
+        });
+    }, [list]);
+
+    return (
+        <BlmodalControllerContext.Provider
+            value={{
+                showAddFrenModal,
+                setAddFrenModalShow,
+                setList,
+                list,
+            }}
+        >
+            <Container
+                className="businessList-Container"
+                style={{
+                    position: "relative",
+                    minHeight: "100%",
+                    height: "auto",
+                }}
             >
-              <option className="BusinessList--Row__ColText">한신닭발</option>
-              <option className="BusinessList--Row__ColText" value="1">
-                이디야
-              </option>
-              <option className="BusinessList--Row__ColText" value="2">
-                청기와식당
-              </option>
-            </Form.Select>
-          </Col>
-          <Col></Col>
-        </Row>
-        <Row>
-          <Col></Col>
-          <Col xs={8}  className="BusinessList--Coll__ContentBox">
-            <Row className="BusinessList--RowContents">
-              <Col>
-                <h5 className="BusinessList--Row__ColText">대표이미지</h5>
-              </Col>
-              <Col>
-                <h5></h5>
-              </Col>
-              <Col>
-                <img
-                  src="https://dummyimage.com/90x90/000/fff&text=food"
-                  style={{ float: "right", borderRadius: "50px" }}
-                />
-              </Col>
-            </Row>
-            <Row className="BusinessList--RowContents">
-              <Col>
-                <h5 className="BusinessList--Row__ColText">사업자번호</h5>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Row__ColText">3714-158988-01</h5>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Enter">
-                  <FaChevronRight />
-                </h5>
-              </Col>
-            </Row>
-            <Row className="BusinessList--RowContents">
-              <Col>
-                <h5 className="BusinessList--Row__ColText">가게명</h5>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Row__ColText">한신닭발</h5>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Enter">
-                  <FaChevronRight />
-                </h5>
-              </Col>
-            </Row>
-            <Row className="BusinessList--RowContents">
-              <Col>
-                <h5 className="BusinessList--Row__ColText">대표자명</h5>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Row__ColText">백주부</h5>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Enter">
-                  <FaChevronRight />
-                </h5>
-              </Col>
-            </Row>
-            <Row className="BusinessList--RowContents">
-              <Col>
-                <h5 className="BusinessList--Row__ColText">주소</h5>
-              </Col>
-              <Col>
-                <Form.Control
-                  className="BusinessList--Row__ColText"
-                  id="postcode--addressNumber"
-                  type="text"
-                  placeholder="우편번호"
-                  readOnly
-                />
-
-                <Form.Control
-                  className="mt-3 BusinessList--Row__ColText"
-                  type="text"
-                  id="postcode--Address"
-                  placeholder="주소"
-                  readOnly
-                ></Form.Control>
-                <Form.Control
-                  className="mt-3 BusinessList--Row__ColText"
-                  type="text"
-                  id="postcode-detailAddress"
-                  placeholder="상세주소"
-                  readOnly
-                ></Form.Control>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Enter">
-                  <FaChevronRight />
-                </h5>
-              </Col>
-            </Row>
-            <Row className="Mypage--RowContents">
-              <Col>
-                <h5 className="BusinessList--Row__ColText">가맹점소개</h5>
-              </Col>
-              <Col>
-                <h5>
-                  <Form.Control
-                    className="BusinessList--Row__ColText"
-                    as="textarea"
-                    value="가맹점 소개글"
-                    style={{ height: "300px", width: "400px", resize: "none" }}
-                    readOnly
-                  />
-                </h5>
-              </Col>
-              <Col>
-                <h5 className="BusinessList--Enter">
-                  <FaChevronRight />
-                </h5>
-              </Col>
-            </Row>
-          </Col>
-          <Col></Col>
-        </Row>
-      </Container>
-    </>
-  );
+                {franChk ? (
+                    <div style={{ marginTop: "200px" }}>
+                        <div style={{ textAlign: "center", fontSize: "24px" }}>
+                            권한을 보유한 업체가 없습니다.
+                        </div>
+                        <div style={{ textAlign: "center", color: "gray" }}>
+                            마이페이지에서 상권등록버튼을 이용하여 추가해주세요.
+                        </div>
+                        <div style={{ textAlign: "center" }}>
+                            <button
+                                className="col-sm-4 btn btn-primary"
+                                onClick={() => setAddFrenModalShow(true)}
+                            >
+                                상권등록
+                            </button>
+                        </div>
+                    </div>
+                ) : acodionNum ? (
+                    <Accordion
+                        defaultActiveKey={Number(acodionNum.split("?")[1])}
+                        className="businessAccordion"
+                    >
+                        {Array.from({ length: franList.length }).map(
+                            (_, idx) => (
+                                <Accordion.Item eventKey={idx} key={idx}>
+                                    <Accordion.Header>
+                                        {franList[idx].name}
+                                    </Accordion.Header>
+                                    <Accordion.Body>
+                                        <BusinessListForm
+                                            franchiseeList={franList[idx]}
+                                        ></BusinessListForm>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            )
+                        )}
+                    </Accordion>
+                ) : (
+                    <Accordion
+                        defaultActiveKey={Number(0)}
+                        className="businessAccordion"
+                    >
+                        {Array.from({ length: franList.length }).map(
+                            (_, idx) => (
+                                <Accordion.Item eventKey={idx} key={idx}>
+                                    <Accordion.Header>
+                                        {franList[idx].name}
+                                    </Accordion.Header>
+                                    <Accordion.Body>
+                                        <BusinessListForm
+                                            franchiseeList={franList[idx]}
+                                        ></BusinessListForm>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            )
+                        )}
+                    </Accordion>
+                )}
+            </Container>
+            <Footer></Footer>
+        </BlmodalControllerContext.Provider>
+    );
 }
 
 function BusinessList() {
-  const title = "사업장리스트";
-  return (
-    <>
-      <Header title={title}></Header>
-      <BusinessListForm></BusinessListForm>
-      <Footer></Footer>
-    </>
-  );
+    return (
+        <>
+            <MainHeader></MainHeader>
+            <BusinessListAccordian></BusinessListAccordian>
+        </>
+    );
 }
 
 export default BusinessList;

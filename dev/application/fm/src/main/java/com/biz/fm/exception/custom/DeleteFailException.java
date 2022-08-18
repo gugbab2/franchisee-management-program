@@ -4,4 +4,8 @@ public class DeleteFailException extends RuntimeException {
 	public DeleteFailException() {
         super();
     }
+	
+	public DeleteFailException(String message) {
+		super(message);
+	}
 }

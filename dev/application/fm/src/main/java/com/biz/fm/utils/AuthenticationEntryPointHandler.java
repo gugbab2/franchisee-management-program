@@ -24,14 +24,33 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
     public void commence(HttpServletRequest request, HttpServletResponse response
     		, org.springframework.security.core.AuthenticationException authException) 
     		throws IOException, ServletException {
+		
         String exception = (String) request.getAttribute("exception");
         ErrorCode errorCode;
-
+        
         /**
          * 토큰이 없는 경우 예외처리
          */
         if(exception == null) {
-            errorCode = ErrorCode.UNAUTHORIZEDException;
+            errorCode = ErrorCode.FORBIDDEN_EXCEPTION;
+            setResponse(response, errorCode);
+            return;
+        }
+        
+        /**
+         * 권한이 없는 접근일 때 exception 처리
+         */
+        if(exception.equals("ForbiddenException")) {
+            errorCode = ErrorCode.FORBIDDEN_EXCEPTION;
+            setResponse(response, errorCode);
+            return;
+        }
+
+        /**
+         * JWT가 올바르게 구성되지 않았을 때
+         */
+        if(exception.equals("NotCorrectJwt")) {
+            errorCode = ErrorCode.NOTCORRECT_JWT;
             setResponse(response, errorCode);
             return;
         }
@@ -40,18 +59,46 @@ public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint
          * 토큰이 만료된 경우 예외처리
          */
         if(exception.equals("ExpiredJwtException")) {
-            errorCode = ErrorCode.ExpiredJwtException;
+            errorCode = ErrorCode.EXPIRED_JWT_EXCEPTION;
             setResponse(response, errorCode);
             return;
         }
+        
+        /**
+         * 예상하는 형식과 일치하지 않는 특정 형식이나 구성의 JWT일 때
+         */
+//        if(exception.equals("UnexpectedJwt")) {
+//            errorCode = ErrorCode.UNEXPECTED_JWT;
+//            setResponse(response, errorCode);
+//            return;
+//        }
+        
+        /**
+         * 메소드가 잘못되었거나 부적합한 인수를 전달했음을 나타내기 위해
+         */
+        if(exception.equals("IllegalArgumentException")) {
+            errorCode = ErrorCode.ILLEGAL_ARGUMENT_EXCEPTION;
+            setResponse(response, errorCode);
+            return;
+        }
+        
+        /**
+         * JWT의 기존 서명을 확인하지 못했을 때
+         */
+//        if(exception.equals("NoSignatureJwt")) {
+//            errorCode = ErrorCode.NO_SIGNATURE_JWT;
+//            setResponse(response, errorCode);
+//            return;
+//        }
     }
 
     private void setResponse(HttpServletResponse response, ErrorCode errorCode) throws IOException {
-        JSONObject json = new JSONObject();
         response.setContentType("application/json;charset=UTF-8");
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
+        
+        JSONObject json = new JSONObject();
+        json.put("status", errorCode.getStatus().toString().substring(0, 3));
         json.put("code", errorCode.getCode());
         json.put("message", errorCode.getMessage());
         response.getWriter().print(json);

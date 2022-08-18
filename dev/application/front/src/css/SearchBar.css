@@ -10,8 +10,8 @@
 /* 왼족 검색창 위치 */
 .searchArea>.searchArea--Input{
     position: absolute;
-    top: 25px;
-    left: 25px;
+    top: 15px;
+    left: 77px;
 }
 /* 오른쪽 유저정보 버튼 위치 */
 .searchArea>.dropdown{
@@ -32,10 +32,21 @@
 
 /* 오른쪽 유저정보 버튼 드랍다운 메뉴리스트 */
 .dropdown-menu.searchArea--dropdown__dropdownlist{
+    min-width: 120px;
     right: 0px;
     top: 50px;
     padding: 0px;
     height: auto;
+}
+.dropdown-menu.searchArea--dropdown__dropdownlist>.card-header>p{
+    margin: 0px;
+}
+.dropdown-menu.searchArea--dropdown__dropdownlist>li{
+    padding: 0px;
+    width: 100%;
+}
+.dropdown-menu.searchArea--dropdown__dropdownlist>li>.dropdown-item{
+    margin: 0px;
 }
 
 /* 검색버튼 위치 */
@@ -54,16 +65,17 @@
 
 /* 검색창 설정 */
 #searchArea__searchInput {
-    width: 400px;
-    background-color: white;
+    width: 330px;
     border-radius: 15px;
     line-height: 50px;
-    border: 0.3px solid rgba(10, 10, 10, 0.3);
+    /* border: 0.3px solid rgba(10, 10, 10, 0.3); */
     padding-left: 25px;
     outline:none;
     box-sizing: border-box;
     color:rgba(10, 10, 10, 0.5);
     background-color: rgba(250, 250, 250, 0.9);
+    /* box-shadow: 1px 1px 1px 1px rgba(130,130,130,0.6); */
+    box-shadow: 1px 1px 1px 1px rgba(200,200,200,0.8);
 }
 
 #searchArea__searchInput:focus {
@@ -81,10 +93,7 @@
 
 .searchArea--Input{
     z-index: 1046;
+    margin: 0px;
+    padding: 0px;
+    height: fit-content;
 }
-
-
-
-
-
-  

@@ -1,22 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Register from '../pages/Register';
-import { Button, Modal, ModalBody } from 'react-bootstrap';
+import { Modal, ModalBody } from 'react-bootstrap';
 
-export default function RegisterModal({modalShow}) {
-
-  const handleClose = () => modalShow.setRegisterShow(false);
-
+export default function RegisterModal({ showRegister, closeRegisterModal }) {
   return (
     <>
-        <Modal
-            show={modalShow.showRegister}
-            onHide={handleClose}
-            keyboard={false}
-        >
-            <ModalBody>
-                <Register></Register>
-            </ModalBody>
-        </Modal>
+      <Modal
+          show={showRegister}
+          onHide={closeRegisterModal}
+          keyboard={false}
+          style={{top:"60px"}}
+      >
+          <ModalBody>
+              <Register closeRegisterModal={closeRegisterModal}/>
+          </ModalBody>
+      </Modal>
     </>
   )
 }

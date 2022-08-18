@@ -1,5 +1,6 @@
 package com.biz.fm.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.ibatis.javassist.NotFoundException;
@@ -9,13 +10,18 @@ import com.biz.fm.domain.dto.ApplicationDto.AppCreate;
 import com.biz.fm.domain.dto.ApplicationDto.AppDelete;
 import com.biz.fm.domain.dto.ApplicationDto.AppUpdateKey;
 import com.biz.fm.domain.dto.ApplicationDto.AppUpdateName;
+import com.biz.fm.domain.entity.AppToken;
 import com.biz.fm.domain.entity.Application;
 import com.biz.fm.domain.entity.Member;
+import com.biz.fm.exception.custom.ApplicationNameDuplicationException;
 import com.biz.fm.exception.custom.DeleteFailException;
 import com.biz.fm.exception.custom.InsertFailException;
+import com.biz.fm.exception.custom.InvalidEmailException;
 import com.biz.fm.exception.custom.UpdateFailException;
+import com.biz.fm.repository.AppTokenRepository;
 import com.biz.fm.repository.ApplicationRepository;
 import com.biz.fm.repository.MemberRepository;
+import com.biz.fm.utils.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,19 +29,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationService {
 	
-	private final ApplicationRepository appRepository;
+	private final ApplicationRepository applicationRepository;
+	private final AppTokenRepository appTokenRepository;
 	private final MemberRepository memberRepository;
 	
-	public Application getApp(String appId) throws NotFoundException{
-		Application app = appRepository.findById(appId);
+	public List<Application> getAppList(String memberId) throws NotFoundException{
+		List<Application> appList = applicationRepository.findByIdList(memberId);
+		if(appList == null) throw new NotFoundException(null);
+		return appList;
+	}
+	
+	public Application getAppOne(String appId) throws NotFoundException{
+		Application app = applicationRepository.findById(appId);
 		if(app == null) throw new NotFoundException(null);
 		return app;
 	}
 	
 	public Application insert(AppCreate createAppInfo) {
+		Member member = memberRepository.findByEmail(createAppInfo.getEmail());
+		Application app = applicationRepository.findByName(createAppInfo.getName());
 		
-		String email = createAppInfo.getEmail();
-		Member member = memberRepository.findByEmail(email);
+		if(member == null) throw new InvalidEmailException();
+		if(app != null) throw new ApplicationNameDuplicationException();
 		
 		Application insertApp = Application.builder()
 											.id(UUID.randomUUID().toString().replace("-", ""))
@@ -44,52 +59,66 @@ public class ApplicationService {
 											.memberId(member.getId())
 											.build();
 		
-		int result = appRepository.insert(insertApp);
+		int result = applicationRepository.insert(insertApp);
 		if(result > 0) {
-			return appRepository.findById(insertApp.getId());
-		}
-		else throw new InsertFailException();
+			return applicationRepository.findById(insertApp.getId());
+		} else throw new InsertFailException();
+		
 	}
 	
-	public Application nameUpdate(AppUpdateName appName) {
-
-		//수정하고자 하는 앱이 있는지?
-		Application newApp = appRepository.findById(appName.getAppId());
-		if(newApp == null) throw new UpdateFailException();
+	public Application nameUpdate(AppUpdateName appName) throws NotFoundException {
+		System.out.println(appName.getAppId());
+		Application newApp = applicationRepository.findById(appName.getAppId());
+		if(newApp == null) throw new NotFoundException("앱 아이디를 찾을 수 없습니다.");
 		
-		Application updateApp = appRepository.findByName(appName.getCurrentName());
-		if(updateApp == null) throw new UpdateFailException();
+		Application updateApp = applicationRepository.findByName(appName.getNewName());
+		if(updateApp != null) throw new ApplicationNameDuplicationException();
 		
-		updateApp.setName(appName.getNewName());
-		int result = appRepository.nameUpdate(updateApp.toAppUpdate());
+		newApp.setName(appName.getNewName());
+		int result = applicationRepository.nameUpdate(newApp.toAppUpdate());
 		if(result > 0) {
-			return appRepository.findById(updateApp.getId());
-		}
-		else throw new UpdateFailException();
+			return applicationRepository.findById(newApp.getId());
+		} else throw new UpdateFailException();
+		
 	}
 	
 	public Application keyUpdate(AppUpdateKey appUpdateKey) {
-		//중복검사
-		Application checkApp = appRepository.findById(appUpdateKey.getAppId());
+		Application checkApp = applicationRepository.findById(appUpdateKey.getAppId());
 		if(checkApp == null) throw new UpdateFailException();
 			
 		checkApp.setApiKey(UUID.randomUUID().toString().replace("-", ""));
-		int result = appRepository.keyUpdate(checkApp.toAppUpdate());
+		int result = applicationRepository.keyUpdate(checkApp.toAppUpdate());
 		if(result > 0) {
-			return appRepository.findById(checkApp.getId());
-		}
-		else throw new UpdateFailException();
+			return applicationRepository.findById(checkApp.getId());
+		} else throw new UpdateFailException();
+		
 	}
 
-	public Application delete(AppDelete appDelete) {
-		Application deleteApp = appRepository.findById(appDelete.getAppId());
-		if(deleteApp == null) throw new DeleteFailException();
+	public boolean delete(AppDelete appDelete) {
+		Application deleteApplication = applicationRepository.findById(appDelete.getAppId());
+		AppToken deleteAppToken = appTokenRepository.findByAppId(appDelete.getAppId());
 		
-		int result = appRepository.delete(appDelete.getAppId());
-		if(result > 0) {
-			return deleteApp;
+		if(deleteApplication != null && deleteAppToken == null) {
+			int applicationDeleteResult = applicationRepository.delete(appDelete.getAppId());
+			if(applicationDeleteResult > 0) {
+				return true;
+			} else throw new DeleteFailException();
 		}
-		else throw new DeleteFailException();
+		
+		if(deleteApplication != null && deleteAppToken != null) {
+			//외래키로 연결되어 있기 때문에, appToken 을 먼저 제거해야 한다.
+			int appTokenDeleteResult = appTokenRepository.delete(appDelete.getAppId());
+			int applicationDeleteResult = applicationRepository.delete(appDelete.getAppId());
+			
+			//member 권한 ROLE_USER 변경
+			memberRepository.updateRole(deleteApplication.getMemberId(), Role.ROLE_USER.toString());
+			
+			if(applicationDeleteResult > 0 && appTokenDeleteResult > 0) {
+				return true;
+			} else throw new DeleteFailException();
+		}
+		
+		return false;
 	}
 
 }

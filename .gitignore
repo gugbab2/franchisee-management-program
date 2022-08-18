@@ -132,3 +132,6 @@ buildNumber.properties
 
 # Mysql UserInfo
 userInfo.properties
+
+# React Module
+node_modules/

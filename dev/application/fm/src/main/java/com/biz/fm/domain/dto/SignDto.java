@@ -28,19 +28,20 @@ public class SignDto {
 	@Setter
 	@AllArgsConstructor
 	@NoArgsConstructor
+	@Builder
 	public static class SignOut {
 
 		private String email;
+		private String accessToken;
 	}
 	
 	@Getter
 	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
 	@Builder
 	public static class SignInfo{
 
 		private String id;
+		private String name;
 		private String accessToken;
 		private String refreshToken;
 		
@@ -48,8 +49,6 @@ public class SignDto {
 	
 	@Getter
 	@Setter
-	@AllArgsConstructor
-	@NoArgsConstructor
 	public static class SignUp {
 		
 		private String name;

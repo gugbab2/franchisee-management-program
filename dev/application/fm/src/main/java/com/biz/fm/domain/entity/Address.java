@@ -1,9 +1,12 @@
 package com.biz.fm.domain.entity;
 
+import javax.validation.constraints.NotBlank;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +15,20 @@ import lombok.Setter;
 public class Address {
 	@JsonIgnore
 	private String id;
+	
+	@NotBlank
+	@ApiModelProperty(example = "우편번호")
 	private String postalCode;
+	
+	@NotBlank
+	@ApiModelProperty(example = "도로명")
 	private String road;
+	
+	@NotBlank
+	@ApiModelProperty(example = "지번 주소")
 	private String jibun;
+	
+	@ApiModelProperty(example = "상세 주소")
 	private String detail;
 	
 	public void patch(Address address) {

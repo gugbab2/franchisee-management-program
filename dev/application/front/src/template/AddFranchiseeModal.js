@@ -1,126 +1,100 @@
-import React, { useState, createContext } from "react";
-import { Button, Modal, ModalBody, ModalFooter } from "react-bootstrap";
+import React, {
+    useState,
+    createContext,
+    useRef,
+    useEffect,
+    useContext,
+} from "react";
+import { Modal, ModalBody } from "react-bootstrap";
 import Addfranchisee from "../pages/AddFranchisee";
-import AddMenu from "../pages/AddMenu";
-// import AddMenuModal from './AddMenuModal'
+import { modalControllerContext } from "../pages/Mypage";
 
 export const franchiseeinfoContext = createContext();
 
-export default function FrenchiseeModal({ modalShow }) {
-  const [businesscode, setBusinesscode] = useState();
-  const [franchiseename, setFranchiseename] = useState();
-  const [perspectname, setPerspectname] = useState();
-  const [postcode, setPostcode] = useState();
-  const [roadaddress, setRoadaddress] = useState();
-  const [jibunaddress, setJibunaddress] = useState();
-  const [detailaddress, setDetailaddress] = useState();
-  const [fulladdress, setFulladdress] = useState();
-  const [franchiseeintro, setFranchiseeintro] = useState();
+export default function FrenchiseeModal() {
+    //컴포넌트추가
+    const [story, setStory] = useState([]);
+    const modalController = useContext(modalControllerContext);
+    const [franchiseeaddressInfo, setFranchiseeaddressinfo] = useState({
+        jibun: "",
+        postalCode: "",
+        road: "",
+    });
 
-  const [menushow, setMenushow] = useState(false);
-  const menuClose = () => {
-    setMenushow(false);
-    if (true) {
-      setBusinesscode("");
-      setFranchiseename("");
-      setPerspectname("");
-      setPostcode("");
-      setRoadaddress("");
-      setJibunaddress("");
-      setDetailaddress("");
-      setFulladdress("");
-      setFranchiseeintro("");
-    }
-  };
-  const menuShow = () => setMenushow(true);
-  // const [franchiseshow, franchiseshowsetShow] = useState(false);
-  const handleClose = () => {
-    modalShow.setAddFrenShow(false);
-    if (true) {
-      setBusinesscode("");
-      setFranchiseename("");
-      setPerspectname("");
-      setPostcode("");
-      setRoadaddress("");
-      setJibunaddress("");
-      setDetailaddress("");
-      setFulladdress("");
-      setFranchiseeintro("");
-    }
-  };
-  const handleShow = () => modalShow.setAddFrenShow(true);
+    const [franchiseeinput, setFranchiseeinput] = useState({
+        businesscode: "",
+        franchiseename: "",
+        detailaddress: "",
+        franchiseeintro: "",
+        displayAddress: "",
+        phonenumber: "",
+        x: "",
+        y: "",
+    });
+    const [businessChk, setBusinessChk] = useState("");
 
-  const nexthandle = () => {
-    modalShow.setAddFrenShow();
-    setMenushow(true);
-    parentFunction();
-  };
-  const backhandle = () => {
-    handleShow();
-    setMenushow(false);
-  };
+    const addFrenModalClose = () => {
+        setStory([]);
+        modalController.setAddFrenModalShow(false);
+        setFranchiseeaddressinfo({
+            ...franchiseeaddressInfo,
+            jibun: "",
+            postalCode: "",
+            road: "",
+        });
+        setFranchiseeinput({
+            ...franchiseeinput,
+            businesscode: "",
+            franchiseename: "",
+            perspectname: "",
+            detailaddress: "",
+            franchiseeintro: "",
+            displayAddress: "",
+            phonenumber: "",
+        });
+    };
 
-  const parentFunction = (businessChk) => {
-    if (businessChk == false) {
-      console.log("못감");
-    }
-  };
+    useEffect(() => {
+        setBusinessChk("");
+    }, [franchiseeinput.businesscode]);
 
-  return (
-    <>
-      <franchiseeinfoContext.Provider
-        value={{
-          businesscode,
-          setBusinesscode,
-          franchiseename,
-          setFranchiseename,
-          perspectname,
-          setPerspectname,
-          postcode,
-          setPostcode,
-          roadaddress,
-          setRoadaddress,
-          jibunaddress,
-          setJibunaddress,
-          detailaddress,
-          setDetailaddress,
-          fulladdress,
-          setFulladdress,
-          franchiseeintro,
-          setFranchiseeintro,
-        }}
-      >
-        <Modal
-          show={modalShow.showAddFren}
-          onHide={handleClose}
-          keyboard={false}
-          centered
-        >
-          <Modal.Header closeButton></Modal.Header>
-          <ModalBody>
-            <Addfranchisee parentFunction={parentFunction}></Addfranchisee>
-          </ModalBody>
-          <ModalFooter>
-            <button className="btn btn-primary" onClick={nexthandle}>
-              다음
-            </button>
-          </ModalFooter>
-        </Modal>
-        <Modal show={menushow} onHide={menuClose} keyboard={false} centered>
-          <Modal.Header closeButton></Modal.Header>
-          <ModalBody>
-            <AddMenu></AddMenu>
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="primary" onClick={backhandle}>
-              뒤로
-            </Button>
-            <button className="btn btn-primary" onClick={menuClose}>
-              입력
-            </button>
-          </ModalFooter>
-        </Modal>
-      </franchiseeinfoContext.Provider>
-    </>
-  );
+    const inputElement = useRef();
+
+    return (
+        <>
+            <franchiseeinfoContext.Provider
+                value={{
+                    businessChk,
+                    setBusinessChk,
+                    inputElement,
+                    franchiseeinput,
+                    setFranchiseeinput,
+                    franchiseeaddressInfo,
+                    setFranchiseeaddressinfo,
+                }}
+            >
+                <Modal
+                    show={modalController.showAddFrenModal}
+                    onHide={addFrenModalClose}
+                    keyboard={false}
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <h2
+                            style={{ textAlign: "center", marginLeft: "120px" }}
+                        >
+                            가맹점 등록
+                        </h2>
+                    </Modal.Header>
+                    <ModalBody>
+                        <Addfranchisee
+                            inputElement={inputElement}
+                            story={story}
+                            setStory={setStory}
+                        ></Addfranchisee>
+                    </ModalBody>
+                </Modal>
+            </franchiseeinfoContext.Provider>
+        </>
+    );
 }

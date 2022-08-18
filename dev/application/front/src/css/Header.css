@@ -50,12 +50,85 @@
     color: darkgray;
 }
 
+.dropdown-menu.header-dropdown{
+    margin-left: -40px;
+    padding: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+.dropdown-menu.header-dropdown>li{
+    padding: 0px;
+}
+/* .header-dropdown>li>a{
+    border-radius: 3px;
+} */
 
+.Header--navbar {
+    background-color: #4287f5;
+    height: 68px;
+}
 
-/* header fonts */
-@font-face {
-    font-family: 'Hahmlet-Black';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/Hahmlet-Black.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
+.header--rightzone{
+    margin-left: 20px;
+    padding-right: 20px;
+    font-size: 1.1rem;
+    display: flex;
+    color: white;
+}
+
+.header__login:hover{
+    cursor: pointer;
+}
+
+.user__name{
+    color : #FAF8FF;
+    margin-right: 3px;
+}
+.user__name a{
+    text-decoration: none;
+}
+
+.user__name a:hover{
+    cursor: pointer;
+}
+
+.header__logout:hover{
+    cursor: pointer;
+}
+
+.header__right__sep{
+    margin: 0 14px;
+}
+
+@media (max-width: 991px) {
+    .navbar{
+        height: 79px;
+    }
+    .navbar-nav {
+        float: right;
+    }
+
+    .header--rightzone__dropdown.dropdown{
+        width: 130px;
+    }
+    .nav-item:first-child {
+        margin-top: 10px;
+    }
+    .nav-item{
+        color: transparent;
+        z-index: 1;
+    }
+    #Header--Nav__BusinessList {
+        color:rgba(20, 20, 20, 0.8);
+        border-radius: 15px;
+        width: 120px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 13pt;
+        margin-top: 3px;
+    }
+    .navbar-toggler:focus{
+        box-shadow:  0 0 0 .10rem;
+    }
+    
 }

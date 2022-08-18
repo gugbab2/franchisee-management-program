@@ -11,8 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.biz.fm.domain.dto.MemberDto.MemberResponse;
-import com.biz.fm.domain.dto.MemberDto.MemberUpdate;
 import com.biz.fm.domain.dto.SignDto.SignIn;
+import com.biz.fm.domain.dto.SignDto.SignOut;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -32,9 +32,9 @@ public class Member implements UserDetails{
 	private String name;
 	private String email;
 	private String password;
-	private String role;
-	private Integer phoneNumber;
+	private String phoneNumber;
 	private Date birth;
+	private String role;	//권한 추가
 	private Address address;
 	private Timestamp createDate;
 	private Timestamp deleteDate;
@@ -57,11 +57,15 @@ public class Member implements UserDetails{
 				.build();
 	}
 	
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> list = new ArrayList<>();
-		list.add(new SimpleGrantedAuthority(this.role));
-		return list;
+		List<GrantedAuthority> authorities  = new ArrayList<>();
+		
+		for(String role : role.split(",")){
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+        return authorities;
 	}
 
 	@Override

@@ -1,25 +1,25 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import Login from "../pages/Login";
-import { Modal, ModalBody, Button } from "react-bootstrap";
-import {loginCreateContext} from './SearchBar'
+import { CloseButton, Modal, ModalBody, ModalHeader } from "react-bootstrap";
 
-export default function LoginModal() {
-  const loginmodalHandler = useContext(loginCreateContext)
-  const handleClose = () => loginmodalHandler.setLoginShow(false);
-  return (
-    <>
-      <Modal
-        style={{
-          marginTop: "10%",
-        }}
-        show={loginmodalHandler.showLogin}
-        onHide={handleClose}
-        keyboard={false}
-      >
-        <ModalBody>
-          <Login></Login>
-        </ModalBody>
-      </Modal>
-    </>
-  );
+export default function LoginModal({showLogin, closeLoginModal, showFindPWModal, showRegisterModal}) {
+    
+    return (
+        <>
+            <Modal
+                style={{ marginTop: "10%" }}
+                show={showLogin}
+                onHide={closeLoginModal}
+                keyboard={false}
+            >
+                <ModalBody>
+                    <Login 
+                        closeLoginModal={closeLoginModal}
+                        showFindPWModal={showFindPWModal}
+                        showRegisterModal={showRegisterModal}
+                    />
+                </ModalBody>
+            </Modal>
+        </>
+    );
 }

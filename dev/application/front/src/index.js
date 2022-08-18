@@ -7,9 +7,9 @@ import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <RenderAfterNavermapsLoaded ncpClientId={"4dahz1jg7c"}>
+//   <RenderAfterNavermapsLoaded ncpClientId={"4dahz1jg7c"}>
     <App />
-  </RenderAfterNavermapsLoaded>
+//   </RenderAfterNavermapsLoaded>
 );
 
 

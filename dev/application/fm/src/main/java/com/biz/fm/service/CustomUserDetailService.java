@@ -10,7 +10,6 @@ import com.biz.fm.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
-//DB에서 유저의 정보를 조회하는 역할을 수행합니다.
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
@@ -18,13 +17,9 @@ public class CustomUserDetailService implements UserDetailsService {
 	private final MemberRepository memberRepository;
 	
 	@Override
-	public UserDetails loadUserByUsername(String memberName) throws UsernameNotFoundException {
-		Member member = memberRepository.findByEmail(memberName);
-		
-		if(member == null) {
-			throw new UsernameNotFoundException(memberName);
-		}
-		
+	public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
+		Member member = memberRepository.findByEmailForValidation(memberEmail);
+		if(member.getRole() == null) return null;
 		return member;
 	}
 

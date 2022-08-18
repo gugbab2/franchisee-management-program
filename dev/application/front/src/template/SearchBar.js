@@ -1,95 +1,66 @@
-import React, { createContext, useState } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Form, Button, InputGroup, Card } from "react-bootstrap";
-import RegisterModal from "./RegisterModal";
-import LoginModal from "./LoginModal";
-import AddFranchiseeModal from "./AddFranchiseeModal";
+import { InputGroup } from "react-bootstrap";
 import { TbSearch } from "react-icons/tb";
-import { FaUser } from "react-icons/fa";
-
 import "../css/SearchBar.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const loginCreateContext = createContext();
+function SearchBar({ searchResultTogOpen, detailTogClose,keyword }) {
 
-function SearchBar({ callback }) {
-  let [showRegister, setRegisterShow] = useState(false);
+    const toastDefaultOption = {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      }
 
-  const showRegisterModal = () => {
-    setRegisterShow((showRegister = !showRegister));
-  };
-
-  let [showLogin, setLoginShow] = useState(false);
-
-  const showLoginModal = () => {
-    setLoginShow((showLogin = !showLogin));
-  };
-
-  let [showAddFren, setAddFrenShow] = useState(false);
-
-  const showAddFrenModal = () => {
-    setAddFrenShow((showAddFren = !showAddFren));
-  };
-
-  return (
-    <>
-      <div className="searchArea">
-        <div className="searchArea--Input">
-          <InputGroup className="mb-4" id="searchArea--InputForm">
-            <input
-              type="text"
-              id="searchArea__searchInput"
-              placeholder="검색내용"
-            />
-            <button id="searchArea--Input__searchBtn" onClick={callback}>
-              <TbSearch id="searchArea--Input__searchIcon" size="24" />
-            </button>
-          </InputGroup>
-        </div>
-        <div className="dropdown">
-          <img src="./img/usermarker.png" role="button"></img>
-          <ul
-            className="dropdown-menu searchArea--dropdown__dropdownlist"
-            role="card"
-            aria-labelledby="dropdownMenuLink"
-          >
-            <Card.Header>유저이름</Card.Header>
-            <Card.Body>
-              <Card.Text>사업자 번호</Card.Text>
-            </Card.Body>
-            <li role="button">
-              <p className="dropdown-item" onClick={showRegisterModal}>
-                회원가입
-              </p>
-              <RegisterModal
-                modalShow={{ showRegister, setRegisterShow }}
-              ></RegisterModal>
-            </li>
-            <loginCreateContext.Provider
-              value={{
-                showLogin,
-                setLoginShow,
-              }}
-            >
-              <li role="button">
-                <p className="dropdown-item" onClick={showLoginModal}>
-                  로그인
-                </p>
-                <LoginModal></LoginModal>
-              </li>
-            </loginCreateContext.Provider>
-            {/* <li role="button">
-              <p className="dropdown-item" onClick={showAddFrenModal}>
-                상권등록
-              </p>
-              <AddFranchiseeModal
-                modalShow={{ showAddFren, setAddFrenShow }}
-              ></AddFranchiseeModal>
-            </li> */}
-          </ul>
-        </div>
-      </div>
-    </>
-  );
+    return (
+        <>
+            <div className="searchArea">
+                <div className="searchArea--Input">
+                    <InputGroup className="mb-4" id="searchArea--InputForm">
+                        <input
+                            type="text"
+                            id="searchArea__searchInput"
+                            placeholder="검색내용"
+                            onKeyDown={(e)=>{
+                                if(e.key==='Enter') {
+                                    keyword=document.getElementById('searchArea__searchInput').value;
+                                    detailTogClose();
+                                    if(document.getElementById('searchArea__searchInput').value.startsWith(' ') || document.getElementById('searchArea__searchInput').value===''){
+                                        toast.error('공백으로 시작되는 문자열은 검색할 수 없습니다',toastDefaultOption);
+                                    }else{
+                                        searchResultTogOpen(keyword);
+                                    }
+                                };
+                            }}
+                        />
+                        <button
+                            id="searchArea--Input__searchBtn"
+                            onClick={()=>{
+                                keyword=document.getElementById('searchArea__searchInput').value;
+                                detailTogClose();
+                                if(document.getElementById('searchArea__searchInput').value.startsWith(' ') || document.getElementById('searchArea__searchInput').value===''){
+                                    toast.error('공백으로 시작되는 문자열은 검색할 수 없습니다',toastDefaultOption);
+                                }else{
+                                    searchResultTogOpen(keyword);
+                                }
+                            }}
+                        >
+                            <TbSearch
+                                id="searchArea--Input__searchIcon"
+                                size="24"
+                            />
+                        </button>
+                    </InputGroup>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default SearchBar;
