@@ -78,7 +78,11 @@ function ApiHeader() {
             <Navbar expand="lg" className="Header--navbar" fixed='top'>
                 <NavLink role="button" to="/" id="Header--Nav__BusinessList">
                     <Navbar.Brand id="Header__mainText">
-                        <img alt="메인로고이미지" src="./img/logo.jpg" style={{ marginTop: "-10px", marginLeft: "-16px" }} />
+                        <span style={{ cursor: 'pointer' }}>
+                            <img id="Header-LogoImg" alt="메인로고이미지" src="./img/HeaderLogo.png" />
+                            <span id="Header-franText">Franchise</span>
+                            <span id="Header-ManageText">Management</span>
+                        </span>
                     </Navbar.Brand>
                 </NavLink>
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">

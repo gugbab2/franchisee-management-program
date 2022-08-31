@@ -6,7 +6,7 @@ import "../css/SearchBar.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function SearchBar({ searchResultTogOpen, detailTogClose,keyword }) {
+function SearchBar({ setSearchPage, searchResultTogOpen, detailTogClose, keyword }) {
     return (
         <>
             <div className="searchArea">
@@ -16,27 +16,29 @@ function SearchBar({ searchResultTogOpen, detailTogClose,keyword }) {
                             type="text"
                             id="searchArea__searchInput"
                             placeholder="검색내용"
-                            onKeyDown={(e)=>{
-                                if(e.key==='Enter') {
-                                    keyword=document.getElementById('searchArea__searchInput').value;
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    keyword = document.getElementById('searchArea__searchInput').value;
                                     detailTogClose();
-                                    if(document.getElementById('searchArea__searchInput').value.startsWith(' ') || document.getElementById('searchArea__searchInput').value===''){
-                                        toast.error('공백으로 시작되는 문자열은 검색할 수 없습니다',toast.toastDefaultOption);
-                                    }else{
+                                    if (keyword.includes('<') || keyword.includes('>') || keyword.includes('&') || document.getElementById('searchArea__searchInput').value.startsWith(' ') || document.getElementById('searchArea__searchInput').value === '') {
+                                        toast.error('공백또는 꺽쇠로 시작되는 문자열은 검색할 수 없습니다', toast.toastDefaultOption);
+                                    } else {
                                         searchResultTogOpen(keyword);
+                                        setSearchPage(1);
                                     }
                                 };
                             }}
                         />
                         <button
                             id="searchArea--Input__searchBtn"
-                            onClick={()=>{
-                                keyword=document.getElementById('searchArea__searchInput').value;
+                            onClick={() => {
+                                keyword = document.getElementById('searchArea__searchInput').value;
                                 detailTogClose();
-                                if(document.getElementById('searchArea__searchInput').value.startsWith(' ') || document.getElementById('searchArea__searchInput').value===''){
-                                    toast.error('공백으로 시작되는 문자열은 검색할 수 없습니다',toast.toastDefaultOption);
-                                }else{
+                                if (keyword.includes('<') || keyword.includes('>') || keyword.includes('&') || document.getElementById('searchArea__searchInput').value.startsWith(' ') || document.getElementById('searchArea__searchInput').value === '') {
+                                    toast.error('공백또는 꺽쇠로 시작되는 문자열은 검색할 수 없습니다', toast.toastDefaultOption);
+                                } else {
                                     searchResultTogOpen(keyword);
+                                    setSearchPage(1);
                                 }
                             }}
                         >

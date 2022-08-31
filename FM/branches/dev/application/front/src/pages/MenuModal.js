@@ -5,7 +5,6 @@ import "../css/MenuModal.css";
 import { ToastContainer, toast } from 'react-toastify';
 
 export const AddMenuModal = ({ menuModalshow, setMenuModalshow, businessNumber, setMenuList, menuList, oneMenu, setOneMenu }) => {
-
     const ModalClose = () => {
         // 모달끌때 상태값지우기
         setOneMenu('');
@@ -111,6 +110,7 @@ export const AddMenuModal = ({ menuModalshow, setMenuModalshow, businessNumber, 
                     },
                 };
                 setMenuList(menuList.concat(tempObj));
+                toast.success('메뉴가 등록되었습니다.', toast.toastDefaultOption);
             });
         } else {
             instance({
@@ -138,10 +138,11 @@ export const AddMenuModal = ({ menuModalshow, setMenuModalshow, businessNumber, 
                         },
                     };
                     setMenuList(menuList.concat(tempObj));
+                    toast.success('메뉴가 등록되었습니다.', toast.toastDefaultOption);
                 })
                 .catch((err) => { });
         }
-        toast.success('메뉴가 등록되었습니다.', toast.toastDefaultOption);
+        // toast.success('메뉴가 등록되었습니다.', toast.toastDefaultOption);
         setMenuModalshow(false);
     }
 

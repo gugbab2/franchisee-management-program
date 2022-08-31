@@ -80,10 +80,10 @@ public class FranchiseeService {
 		
 	}
 	
-	public SearchFranchiseeList mapSearch(String word,int page) throws NotFoundException{
-		int offset = (page-1)*10;
+	public SearchFranchiseeList mapSearch(String word, double longitude, double latitude) throws NotFoundException{
 		int count = franchiseeRepository.mapSearchCount(word);
-		List<Franchisee> franchisees = franchiseeRepository.mapSearch(word,offset); 
+		
+		List<Franchisee> franchisees = franchiseeRepository.mapSearch(word,longitude,latitude);
 		
 		if(franchisees.size()==0 || word.matches("[ !@#$%^&*(),.?\":{}|<>]")) {
 			throw new NotFoundException("일치하는 정보가 없습니다.");
@@ -263,6 +263,11 @@ public class FranchiseeService {
 		Map<String, Boolean> map = new HashMap<>();
 		map.put("result", !franchiseeRepository.checkBusinessNumberExists(businessNumber));
 		return map;
+	}
+
+	public FranchiseeResponse findByName(String franchiseeName) {
+		List<Franchisee> franchisees = franchiseeRepository.findByName(franchiseeName);
+		return franchisees.get(0).toFranchiseeResponse();
 	}
 	
 	

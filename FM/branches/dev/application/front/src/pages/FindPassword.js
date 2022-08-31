@@ -52,7 +52,7 @@ export default function FindPassword({findpwshow,openFindpw,closeFindpw}) {
                     
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                     setModalSpinner(false);
                     errorNotify('인증 코드 전송에 실패했습니다. 이메일을 확인해주세요.');
                 })
@@ -67,7 +67,7 @@ export default function FindPassword({findpwshow,openFindpw,closeFindpw}) {
                     setActiveTimer(false);
                 })
                 .catch((err) => {
-                    console.log(err)
+                    // console.log(err)
                     setModalSpinner(false);
                     errorNotify('인증에 실패했습니다. 인증코드 또는 제한시간을 확인해주세요.');
                 })

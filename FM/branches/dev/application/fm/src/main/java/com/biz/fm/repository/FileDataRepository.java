@@ -1,5 +1,7 @@
 package com.biz.fm.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,6 +25,9 @@ public interface FileDataRepository {
 			@Result(property = "createDate", column = "f_create_date")			
 	})
 	public FileData findById(String fileId);
+	
+	@Select("SELECT * FROM file_data")
+	public List<FileData> findAll();
 	
 	@Select("SELECT *, id as file_id, name as file_name, create_date as f_create_date from file_data WHERE name = #{fileName} AND delete_date is null")
 	@ResultMap("fileData")

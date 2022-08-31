@@ -559,7 +559,6 @@ function ApiDocumentForm() {
             }
         }
 
-        console.log(window.scrollY)
         window.addEventListener("scroll", handleShowButton)
         return () => {
             window.removeEventListener("scroll", handleShowButton)
@@ -608,7 +607,7 @@ function ApiDocumentForm() {
                                             <ListItemIcon>
                                                 {apiDocsfunc(index)}
                                             </ListItemIcon>
-                                            <ListItemText primary={text} />
+                                            <ListItemText style={{wordBreak : 'keep-all'}} primary={text} />
                                         </ListItemButton>
                                     </Scroll.Link>
                                 </ListItem>

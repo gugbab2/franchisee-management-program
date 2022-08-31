@@ -85,8 +85,7 @@ export const BusinessDetailInfo = ({ franBackImg, setFranBackImg }) => {
                     intro: res.data.intro
                 })
                 setBusinessDetailInfo(res.data);
-                if (detailBackImg) {
-
+                if (detailBackImg && franBackImg.length + detailBackImg.length < 11) {
                     instance({
                         method: "post",
                         url: `/franchisee/` + businessDetailInfo.businessNumber + '/images',
@@ -100,6 +99,7 @@ export const BusinessDetailInfo = ({ franBackImg, setFranBackImg }) => {
                         });
                         setDetailBackImg([]);
                         // setFranBackImg({ ...franBackImg, detailBackImg })
+                    }).catch(function (err) {
                     });
                 }
             }).catch(function (error) {

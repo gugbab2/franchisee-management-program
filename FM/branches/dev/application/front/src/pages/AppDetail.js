@@ -63,7 +63,7 @@ function ApiDocumentForm() {
         }).then(function (res) {
             setAppLOne(res.data);
         }).catch(function (err){ 
-            console.log(err);
+            // console.log(err);
         });
     };
     const reIssueAppKey = () => {
@@ -75,7 +75,7 @@ function ApiDocumentForm() {
             setAppLOne(res.data);
             successNotify("앱 키가 재발급 되었습니다.");
         }).catch(function (err){ 
-            console.log(err);
+            // console.log(err);
         });
     };
     const updateOnKeyPress = e => {
@@ -92,7 +92,7 @@ function ApiDocumentForm() {
             setAppLOne(res.data);
             successNotify('앱 이름이 수정 되었습니다.')
         }).catch(function (err){
-            console.log(err);
+            // console.log(err);
             if(err.response.data.code == "A001"){
                 errorNotify("동일한 앱 이름이 존재합니다.");
             } 
@@ -115,7 +115,7 @@ function ApiDocumentForm() {
                 goToMain();
             }).catch(function (err){
                 errorNotify('앱 삭제를 실패했습니다.')
-                console.log(err);
+                // console.log(err);
             });
         }else{
             errorNotify('삭제 문장을 다시 한번 확인해주세요.');

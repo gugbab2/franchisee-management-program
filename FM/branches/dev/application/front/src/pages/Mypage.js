@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext, useContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { Container, Row, Col, ListGroup, Form, Modal, Dropdown } from "react-bootstrap";
 import MainHeader from "../template/MainHeader";
 import Footer from "../template/Footer";
@@ -17,7 +17,6 @@ import { Pagination, Stack } from "@mui/material";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
-import { AiOutlineBorderLeft } from "react-icons/ai";
 import { Input } from "@material-ui/core";
 
 export const modalControllerContext = createContext();
@@ -84,6 +83,8 @@ function MypageForm() {
     //가맹점 등록 모달 출력
     const showAddFrenModalFunction = () => {
         setAddFrenModalShow(true);
+        document.getElementById('franSearchbar').value='';
+        setQuery('');
     };
 
     const [list, setList] = useState([]);
@@ -192,15 +193,17 @@ function MypageForm() {
     //가맹점 페이징
     const [franPage, setFranPage] = React.useState(1);
     const [click, setClick] = useState(true);
-    const [option, setOption] = useState('DESC');
     const [order, setOrder] = useState('business_number');
     const [query, setQuery] = useState('');
     const [queryCount, setQueryCount] = useState(0);
     const [queryList, setQueryList] = useState([]);
+    const [sortArrow, setSortArrow] = useState('businessNum');
 
     useEffect(() => {
-        if (click === true) setOption('ASC');
-        else setOption('DESC');
+        let option;
+        if (click) option = 'ASC';
+        else option = 'DESC';
+        // setList([])
         instance({
             method: "get",
             url: "/member/" + localStorage.getItem("userId") + "/franchisee",
@@ -210,7 +213,6 @@ function MypageForm() {
                 if (query) {
                     setQueryCount(res.data.searchCount);
                     setQueryList(res.data.franchisees);
-                    setFranPage(1);
                 }
                 else {
                     setSearchCount(res.data.searchCount);
@@ -218,9 +220,9 @@ function MypageForm() {
                 }
             })
             .catch((err) => {
-                console.log(err)
+                // console.log(err)
             });
-    }, [click, franPage, option, query, queryCount, showAddFrenModal, show])
+    }, [click, franPage, query, queryCount, showAddFrenModal, show])
 
     //전화번호 onchnage 부분
     const handlePhonePress = (e) => {
@@ -250,7 +252,8 @@ function MypageForm() {
                     list,
                     setFranPage,
                     franPage,
-                    searchCount
+                    searchCount,
+                    setQuery
                 }}
             >
                 <MainHeader />
@@ -391,9 +394,42 @@ function MypageForm() {
                                         }}
                                     >
                                         <Row style={{ marginLeft: "10px", backgroundColor: "rgb(245, 240, 240)", marginRight: "0px", }}>
-                                            <Col md={3} className="Mypage-FranText" onClick={(e) => { setClick(!click); setOrder('business_number'); }}>사업자 번호</Col>
-                                            <Col md={3} className="Mypage-FranText" onClick={(e) => { setClick(!click); setOrder('name'); }}> 가맹점 이름</Col>
-                                            <Col md={5} className="Mypage-FranText" onClick={(e) => { setClick(!click); setOrder('tel'); }}>전화번호</Col>
+                                            <Col md={3}
+                                                className="Mypage-FranText"
+                                                onClick={(e) => {
+                                                    setClick(!click);
+                                                    setOrder('business_number');
+                                                    setSortArrow('businessNum')
+                                                }}>
+                                                사업자 번호
+                                                <span style={{ fontSize: '8pt', marginLeft: '5px' }}>
+                                                    {sortArrow === 'businessNum' ? click ? '▼' : '▲' : '▼'}
+                                                </span>
+                                            </Col>
+                                            <Col md={3}
+                                                className="Mypage-FranText"
+                                                onClick={(e) => {
+                                                    setClick(!click);
+                                                    setOrder('name');
+                                                    setSortArrow('franName')
+                                                }}>
+                                                가맹점 이름
+                                                <span style={{ fontSize: '8pt', marginLeft: '5px' }}>
+                                                    {sortArrow === 'franName' ? click ? '▼' : '▲' : '▼'}
+                                                </span>
+                                            </Col>
+                                            <Col md={5}
+                                                className="Mypage-FranText"
+                                                onClick={(e) => {
+                                                    setClick(!click);
+                                                    setOrder('tel');
+                                                    setSortArrow('tel')
+                                                }}>
+                                                전화번호
+                                                <span style={{ fontSize: '8pt', marginLeft: '5px' }}>
+                                                    {sortArrow === 'tel' ? click ? '▼' : '▲' : '▼'}
+                                                </span>
+                                            </Col>
                                             <Col md={1}></Col>
                                         </Row>
                                         {list.length > 0 ? (
@@ -440,7 +476,7 @@ function MypageForm() {
                                                             <Link
                                                                 className="Mypage-FranDetail"
                                                                 to={"/businessDetail"}
-                                                                state={{ businessNumber: `${ele.businessNumber}`, list: { list }, searchCount: { searchCount }, data: { ele }, franPage: { franPage } }}
+                                                                state={{ businessNumber: `${ele.businessNumber}`, query: { queryCount }, list: { list }, searchCount: { searchCount }, data: { ele }, franPage: { franPage } }}
                                                                 style={{
                                                                     textDecoration: "none",
                                                                     color: "black",

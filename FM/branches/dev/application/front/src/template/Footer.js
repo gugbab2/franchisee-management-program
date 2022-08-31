@@ -5,7 +5,9 @@ function Footer() {
     <footer className="footer">
       <div className="footer_inner">
         <div className="logo_foot">
-          <img src="./img/color-logo.png" alt="bizplay" />
+          <img src="./img/HeaderLogo.png" alt="bizplay" />
+          <span style={{ position: 'relative', top: '-7px', left: '4px', fontSize: '16px', fontWeight: 'bold' }}>Franchise</span>
+          <span style={{ position: 'relative', top: '8px', left: '-68px', fontSize: '16px', fontWeight: 'bold' }}>Management</span>
         </div>
         <div className="footer_info">
           <p>

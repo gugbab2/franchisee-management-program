@@ -24,6 +24,11 @@
 
 /* 메뉴추가 모달css */
 /* 메뉴추가 모달 이미지 */
+.AddMenu-inputbox__text{
+    color: white;
+    text-align: center;
+    font-size: 15pt;
+}
 .addMenuModalImg > img {
     width: 200px;
     height: 200px;

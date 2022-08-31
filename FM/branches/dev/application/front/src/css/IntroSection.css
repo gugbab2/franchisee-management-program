@@ -18,11 +18,11 @@
 
 .section__text__franchiess{
     float: left;
-    width: 600px;
+    width: 640px;
 }
 .section__text__api{
     float: right;
-    width: 600px;
+    width: 640px;
     position: relative;
 }
 .section__text__title{

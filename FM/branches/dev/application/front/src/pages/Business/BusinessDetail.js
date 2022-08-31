@@ -39,7 +39,13 @@ const MainZone = () => {
     const [franBackImg, setFranBackImg] = useState([]);
 
     // 가맹점 내업체 리스트 페이지
-    const [franPage, setfranPage] = React.useState(state.franPage.franPage);
+    const [franPage, setfranPage] = React.useState((() => {
+        if (state.query) {
+            return 1;
+        } else {
+            return (state.franPage.franPage);
+        }
+    }));
 
     const [businessDetailInfo, setBusinessDetailInfo] = useState({
         address: {
@@ -100,12 +106,11 @@ const MainZone = () => {
         <>
             <ScrollToTop />
             <BusinessContext.Provider value={{ businessDetailInfo, setBusinessDetailInfo }}>
-                <div>
+                <div style={{ overflowX: "hidden" }}>
                     <BusinessDetailList info={businessDetailInfo} businessPageNum={businessPageNum} setBusinessPageNum={setBusinessPageNum} list={state.list} franList={franList} setFranList={setFranList} searchCount={searchCount} setSearchCount={setSearchCount} franPage={franPage} setfranPage={setfranPage} franDetailList={franDetailList} setFranDetailList={setFranDetailList} />
                     <div className='businessDetail--mainZone'>
                         <div className='businessDetail--mainZone__img1' alt="가맹점이미지" style={{ backgroundImage: `url(${process.env.REACT_APP_SERVER_URL}${businessDetailInfo.firstImg})` }}>
                             <div className='businessDetail--mainZone__img2'>
-                                <div className='businessDetail--mainZone__img3'></div>
                             </div>
                         </div>
                         <span className='businessDetail--mainZone__name'>{businessDetailInfo.name}</span>
@@ -122,16 +127,15 @@ const MainZone = () => {
                                         "$1-$2-$3"
                                     )}
                             </span>
-                            {/* <span>{businessDetailInfo.tel}</span> */}
                         </div>
                         <div className='businessDetail--mainZone__BtnZone'>
                             <button className='businessDetail--mainZone__BtnZone-Btn' onClick={() => { goPlace(); }}>내 플레이스 보기</button>
                             <button className='businessDetail--mainZone__BtnZone-Btn' onClick={(e) => { setShowDelModal(true); setBusinessData(businessDetailInfo); }}>업체 삭제</button>
                         </div>
                     </div>
-                </div>
-                <div>
-                    {businessPageNum === 0 ? (<BusinessDetailInfo franBackImg={franBackImg} setFranBackImg={setFranBackImg} />) : (businessPageNum === 1 ? (<BusinessDetailMenu businessNumber={businessDetailInfo.businessNumber} />) : (<BusinessDetailRunTime businessNumber={businessDetailInfo.businessNumber} businessDetailInfo={businessDetailInfo} setBusinessDetailInfo={setBusinessDetailInfo} />))}
+                    <div>
+                        {businessPageNum === 0 ? (<BusinessDetailInfo franBackImg={franBackImg} setFranBackImg={setFranBackImg} />) : (businessPageNum === 1 ? (<BusinessDetailMenu businessNumber={businessDetailInfo.businessNumber} />) : (<BusinessDetailRunTime businessNumber={businessDetailInfo.businessNumber} businessDetailInfo={businessDetailInfo} setBusinessDetailInfo={setBusinessDetailInfo} />))}
+                    </div>
                 </div>
                 {showDelModal ? (
                     <DelFranModals
@@ -152,4 +156,3 @@ export const BusinessDetail = () => {
         </>
     )
 }
-

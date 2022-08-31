@@ -71,8 +71,9 @@ public class FranchiseeController {
 	@GetMapping("/search/keyword")
 	@ApiOperation(value = "키워드를 통한 가맹점 검색", notes = "키워드를 입력하고 키워드와 일치하는 가맹점을 검색")
 	public ResponseEntity<SearchFranchiseeList> mapSearch(@ApiParam(value = "키워드") @RequestParam String keyword,
-																@ApiParam(value = "페이지") @RequestParam(defaultValue = "1") Integer page) throws NotFoundException{
-		return ResponseEntity.ok(franchiseeService.mapSearch(keyword,page));
+														@ApiParam(value = "Y 좌표") @RequestParam double longitude,
+														@ApiParam(value = "X 좌표") @RequestParam double latitude) throws NotFoundException{
+		return ResponseEntity.ok(franchiseeService.mapSearch(keyword,longitude,latitude));
 		
 	}
 	
@@ -81,6 +82,12 @@ public class FranchiseeController {
 	public ResponseEntity<FranchiseeResponse> findByBusinessNumber(@ApiParam(value = "사업자 번호( '-' 제외 )", required = true) @Size(min = 10, max = 10, message = "사업자 번호는 10 자리여야 합니다.")
 													@PathVariable String businessNumber) throws NotFoundException{
 		return ResponseEntity.ok(franchiseeService.findByBusinessNumber(businessNumber));
+	}
+	
+	@GetMapping("/{franchiseeName}/name")
+	@ApiOperation(value = "이름으로 가맹점 조회", notes = "가맹점 이름으로 가맹점을 조회한다.")
+	public ResponseEntity<FranchiseeResponse> findByName(@ApiParam(value = "가맹점 이름", required = true) @PathVariable String franchiseeName) throws NotFoundException{
+		return ResponseEntity.ok(franchiseeService.findByName(franchiseeName));
 	}
 	
 	@GetMapping("/{businessNumber}/menus")

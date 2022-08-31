@@ -59,7 +59,6 @@ function Login({ closeLoginModal, showFindPWModal, showRegisterModal, setUsernam
                         password: password,
                     },
                 }).then(function (res) {
-                    console.log('로그인통신');
                     localStorage.setItem("accessToken", res.data.accessToken);
                     localStorage.setItem("userId", res.data.id);
                     localStorage.setItem("refreshToken", res.data.refreshToken);
@@ -88,10 +87,10 @@ function Login({ closeLoginModal, showFindPWModal, showRegisterModal, setUsernam
                         }
                         else closeLoginModal();
                     }).catch((err) => {
-                        console.log(err)
+                        // console.log(err)
                     });
                 }).catch((err) => {
-                    console.log(err)
+                    // console.log(err)
                     toast.error("ID,PW를 확인해주세요", toast.toastDefaultOption);
                 });
             } else {

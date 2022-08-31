@@ -19,7 +19,7 @@ function Home() {
             width: "47px",
             height: "70px",
             backgruodPosion: "-845px -526px",
-            marginBottom: "20px",
+            marginBottom: "13px",
             text: "업체 신규 등록"
         },
     ];
@@ -48,6 +48,9 @@ function Home() {
     const [franchiseeList, setFranchiseeList] = useState({});
     const [franPage, setFranPage] = useState(1);
 
+    //신규업체등록 모달
+    const [addFranModal, setAddFranModal] = useState(false);
+
     // //유저 정보 받아오는 통신
     useEffect(() => {
         instance({
@@ -61,14 +64,16 @@ function Home() {
             .catch((err) => {
             });
     }, []);
+
+
     return (
         <>
-            <ScrollToTop/>
+            <ScrollToTop />
             <BusinessContext.Provider value={{ userData, setUserData, franchiseeList, setFranchiseeList }}>
                 <MainHeader />
                 <IntroBackground></IntroBackground>
                 <Container fluid="lg" className='home_margin'>
-                    <IntroMenu menus={menus} />
+                    <IntroMenu menus={menus} addFranModal={addFranModal} setAddFranModal={setAddFranModal} />
                     <IntroMyFranchisee></IntroMyFranchisee>
                     <IntroSection sections={sections}></IntroSection>
                 </Container>

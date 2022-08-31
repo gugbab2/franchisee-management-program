@@ -9,7 +9,7 @@ export default function RegisterModal({ showRegister, closeRegisterModal }) {
           show={showRegister}
           onHide={closeRegisterModal}
           keyboard={false}
-          style={{top:"60px"}}
+          centered
       >
           <ModalBody>
               <Register closeRegisterModal={closeRegisterModal}/>

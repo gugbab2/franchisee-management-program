@@ -41,6 +41,7 @@
     cursor: pointer;
     transition: all 0.4s;
 }
+
 .main__link__title:hover {
     font-size: 22px;
 }
@@ -67,6 +68,7 @@
     text-decoration: none;
     transition: all 0.4s;
     font-size: 1.2rem;
+    cursor: pointer;
 }
 
 .main__content__wrap {
@@ -74,8 +76,9 @@
     width: 200px;
     margin: 0 30px;
 }
+
 .main__content:hover {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0, 0, 0, 0.2);
     font-size: 1.3rem;
 }
 
@@ -95,6 +98,10 @@
     margin-left: 5px;
     color: #222;
     transition: all 0.4s;
+}
+
+#main__content__nameText {
+    cursor: pointer;
 }
 
 .main__no__franchisee {
@@ -136,13 +143,14 @@
         margin-bottom: 10px;
         font-size: 13px;
     }
+
     .main__content:hover {
         font-size: 14px;
     }
 
     .main__content__name {
         margin-left: 10px;
-        
+
     }
 
     .more_deco {

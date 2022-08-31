@@ -66,7 +66,6 @@ function MainHeader() {
                 accessToken: localStorage.getItem('accessToken')
             },
         }).then(function (res) {
-            console.log(res)
             if (franchiseeList) {
                 franchiseeList.setUserData({});
                 franchiseeList.setFranchiseeList({});
@@ -75,7 +74,7 @@ function MainHeader() {
             successNotify('로그아웃이 되었습니다.');
             navigate('/')
         }).catch(function (err) {
-            console.log(err)
+            // console.log(err)
             localStorage.clear();
             errorNotify('이미 로그아웃이 되어있습니다.');
             navigate('/')
@@ -88,7 +87,11 @@ function MainHeader() {
             <Navbar expand="lg" className="Header--navbar" fixed='top'>
                 <NavLink role="button" to="/" id="Header--Nav__BusinessList">
                     <Navbar.Brand id="Header__mainText">
-                        <img alt="메인로고이미지" src="./img/logo.jpg" style={{ marginTop: "-10px", marginLeft: "-16px" }} />
+                        <span style={{ cursor: 'pointer' }}>
+                            <img id="Header-LogoImg" alt="메인로고이미지" src="./img/HeaderLogo.png" />
+                            <span id="Header-franText">Franchise</span>
+                            <span id="Header-ManageText">Management</span>
+                        </span>
                     </Navbar.Brand>
                 </NavLink>
                 <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
@@ -135,7 +138,7 @@ function MainHeader() {
                                             <div className="user__name">
                                                 <Navbar.Text className="dropdown header--rightzone__dropdown">
                                                     <Link to="/mypage" style={{ color: '#FAF8FF' }} type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <strong> {username ? username : franchiseeList.userData.name} </strong>님
+                                                        <strong style={{ cursor: 'pointer' }}> {username ? username : franchiseeList.userData.name} </strong>님
                                                     </Link>
                                                     <ul className="dropdown-menu header-dropdown" aria-labelledby="dropdownMenuLink">
                                                         <li role="button" className="dropdown-item">

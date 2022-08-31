@@ -74,7 +74,7 @@ public class FileService {
     	
     	String uuid = UUID.randomUUID().toString().replace("-", "");
     	String originalName = file.getOriginalFilename();
-    	String extension = originalName.substring(originalName.indexOf(".") + 1);
+    	String extension = originalName.substring(originalName.lastIndexOf(".") + 1);
     	
     	String fileName = StringUtils.cleanPath("fm_" + uuid + "." + extension);
 

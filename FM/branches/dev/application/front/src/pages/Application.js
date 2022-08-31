@@ -45,7 +45,7 @@ function ApiDocumentForm() {
         }).then(function (res) {
             setAppList(res.data);
         }).catch(function (err){ 
-            console.log(err);
+            // console.log(err);
         });
     };
     const insertOnKeyPress = (e) => {
@@ -65,7 +65,7 @@ function ApiDocumentForm() {
                 selectApplication();
                 successNotify('앱이 추가 되었습니다.');
             }).catch(function (err){
-                console.log(err);
+                // console.log(err);
                 if(err.response.data.message == "Invalid Email"){
                     errorNotify("해당 이메일이 존재하지 않습니다.");
                 }else if(err.response.data.message == "Application Name is Duplication"){

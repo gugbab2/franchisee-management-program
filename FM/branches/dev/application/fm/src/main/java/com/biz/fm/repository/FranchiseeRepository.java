@@ -39,23 +39,18 @@ public interface FranchiseeRepository{
 			)
 	public int searchListCount(String name,String businessNum, String tel);
 	
-	@Select("SELECT DISTINCT *, member.name as member_name FROM franchisee "
-			+ "JOIN address ON franchisee.address_id = address.id "
+	@Select("SELECT *, member.name as member_name, " 
+			+ "ST_DISTANCE_SPHERE(POINT(#{longitude}, #{latitude}), POINT(x, y)) as distance "
+			+ "FROM franchisee JOIN address ON franchisee.address_id = address.id "
 			+ "JOIN member ON franchisee.owner_id = member.id "
 			+ "WHERE franchisee.name LIKE CONCAT('%',#{keyword},'%') "
+			+ "OR address.jibun LIKE CONCAT('%',#{keyword},'%') "
 			+ "OR franchisee.tel LIKE CONCAT('%',#{keyword},'%') "
 			+ "OR address.road LIKE CONCAT('%',#{keyword},'%') "
-			+ "OR address.jibun LIKE CONCAT('%',#{keyword},'%') "
-			+ "ORDER BY "
-			+ "CASE WHEN franchisee.name = #{keyword} THEN 1 "
-			+ "WHEN franchisee.name LIKE CONCAT('',#{keyword},'%') THEN 2 "
-			+ "WHEN franchisee.name LIKE CONCAT('%',#{keyword},'%') THEN 3 "
-			+ "WHEN franchisee.name LIKE CONCAT('%',#{keyword},'') THEN 4 "
-			+ "ELSE 5 END "
-			+ "LIMIT #{offset}, 10 "
+			+ "ORDER BY distance"
 			)
 	@ResultMap("FranchiseeEntityMap")
-	public List<Franchisee> mapSearch(String keyword,int offset);
+	public List<Franchisee> mapSearch(String keyword,double longitude, double latitude);
 	
 	@Select("SELECT COUNT(*) FROM franchisee "
 			+ "JOIN address ON franchisee.address_id = address.id "
@@ -134,6 +129,14 @@ public interface FranchiseeRepository{
 	@ResultMap("FranchiseeEntityMap")
 	public Franchisee findByBusinessNumber(String businessNumber);
 	
+	
+	@Select("SELECT *, member.name as member_name FROM franchisee "
+			+ "JOIN address ON franchisee.address_id = address.id "
+			+ "JOIN member ON franchisee.owner_id = member.id "
+			+ "WHERE franchisee.name = #{franchiseeName} ")
+	@ResultMap("FranchiseeEntityMap")
+	public List<Franchisee> findByName(String franchiseeName);
+	
 	@Select("SELECT hours FROM franchisee WHERE business_number = #{businessNumber}")
 	public String findHoursByBusinessNumber(String businessNumber);
 	
@@ -153,7 +156,4 @@ public interface FranchiseeRepository{
 	
 	@Delete("Delete FROM franchisee WHERE business_number = #{businessNumber}")
 	public int delete(String businessNumber);
-	
-	
-	
 }

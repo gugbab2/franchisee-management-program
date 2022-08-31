@@ -23,17 +23,19 @@ function IntroMyFranchisee() {
             })
             .catch((err) => {
             });
-    }, [franchiseeList]);
+    }, [franchiseeList, searchCount, franchiseeList.franchiseeList]);
 
-    const checkNameCount = (value) => {
-        if (value.length > 8) {
-            return value.substr(0, 8) + ' ...';
+    // 글자수 세기
+    const checkStringCount = (value, count) => {
+        value = String(value);
+        if (value.length > count) {
+            return value.substr(0, count - 1) + ' ...';
         } else return value;
     };
 
     return (
         <>
-            {franchiseeList.franchiseeList.length > 0 ? (
+            {list.length > 0 ? (
                 <>
                     <div className="main__area">
                         <div className="main__header">
@@ -43,20 +45,21 @@ function IntroMyFranchisee() {
                         </div>
                         <div className="main__content__list">
                             {
-                                franchiseeList.franchiseeList.map((ele, idx) => {
+                                list.map((ele, idx) => {
                                     if (idx < 3) {
+                                        console.log()
                                         return (
-                                            <div key={ele.name} className='main__content__wrap'>
+                                            <div key={idx} className='main__content__wrap'>
                                                 <Link
                                                     to={"/businessDetail"}
                                                     state={{ businessNumber: `${ele.businessNumber}`, list: { list }, searchCount: { searchCount }, data: { ele }, franPage: { franPage } }}
                                                     className="main__content"
                                                 >
                                                     <div className="main__thumbnail">
-                                                        <img alt='FranchiseeImg' style={{ width: "100%", height: '60px' }} src={ele.firstImg} />
+                                                        <img alt='FranchiseeImg' style={{ width: "100%", height: '60px', cursor: 'pointer' }} src={ele.firstImg} />
                                                     </div>
                                                     <div className="main__content__name">
-                                                        <span>{checkNameCount(ele.name)}</span>
+                                                        <span id="main__content__nameText">{checkStringCount(ele.name, 8)}</span>
                                                     </div>
                                                 </Link>
                                             </div>
@@ -72,7 +75,7 @@ function IntroMyFranchisee() {
     )
 
     {
-        franchiseeList.franchiseeList.map((ele, idx) => {
+        list.map((ele, idx) => {
             return (
                 <div>{ele.name}</div>
             )

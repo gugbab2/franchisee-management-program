@@ -168,7 +168,6 @@ function BusinessDetailList({ setBusinessPageNum, info, franList, setFranList, s
                     </ul>
                 </div>
             </div>
-
         </>
     );
 }

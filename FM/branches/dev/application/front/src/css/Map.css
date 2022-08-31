@@ -9,6 +9,7 @@
 .FMIndexMapDom{
     width: 100%;
     height: 100%;
+    z-index: 0;
 }
 
 /* 거리설정, 갯수설정 버튼 기본 세팅  */
@@ -109,10 +110,11 @@
 }
 
 .dropdown-menu.navermap--radiusSettingDropdown{
-    /* display: block; */
     padding:4px;
     padding-left: 10px;
-    min-width: 110px;
+    min-width: 85px;
+    /* z-index: 9999; */
+    /* background-color: red; */
     /* 드랍다운 박스 */
 }
 .dropdown-menu.navermap--radiusSettingDropdown>li{
@@ -127,10 +129,11 @@
 */
 
 .dropdown-menu.navermap--countSettingDropdown{
-    /* display: block; */
     padding:4px;
     padding-left: 10px;
-    min-width: 110px;
+    min-width: 85px;
+    /* z-index: 9999; */
+    /* background-color: red; */
     /* 드랍다운 박스 */
 }
 .dropdown-menu.navermap--countSettingDropdown>li{
@@ -334,7 +337,7 @@
 }
 
 .infowindowzone{
-    width: 170px;
+    width: 130px;
     max-height: 115px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -356,6 +359,80 @@
     background: rgba(33, 122, 244, .1);  /*스크롤바 뒷 배경 색상*/
 
 }
+
+/* range drag drop */
+*, *::after, *::before {
+	-webkit-user-select: none;
+	-webkit-user-drag: none;
+	-webkit-app-region: no-drag;
+	cursor: default;
+}
+
+/* radius range css */
+#radiusRange{
+    /* -webkit-appearance: none; */
+    height: 150px;
+    width: 15px;
+    border-radius: 5px;
+    background: #ccc;
+    outline: none;
+    /* IE */
+    writing-mode: bt-lr;
+    /* WebKit */
+    -webkit-appearance: slider-vertical; 
+    float: left;
+}
+
+#radiusRange::-moz-range-track {
+    background: #ccc;
+    border: 0;
+}
+
+#radiusRange::-moz-focus-inner { 
+  border: 0; 
+}
+#radiusRangeoutput{
+    display: inline-block;
+    height: 150px;
+    width: 40px;
+    font-size: 10pt;
+    margin-left: 10px;
+}
+#radiusRangeoutput>p{
+    margin-bottom: 7px;
+}
+
+/* count range css */
+#countRange{
+    -webkit-appearance: none;
+    height: 150px;
+    width: 15px;
+    border-radius: 5px;
+    background: #ccc;
+    outline: none;
+    writing-mode: bt-lr; /* IE */
+    -webkit-appearance: slider-vertical; /* WebKit */
+    float: left;
+}
+#countRange::-moz-range-track {
+    background: #ccc;
+    border: 0;
+}
+
+#countRange::-moz-focus-inner { 
+  border: 0; 
+}
+#countRangeoutput{
+    display: inline-block;
+    height: 150px;
+    width: 40px;
+    font-size: 10pt;
+    margin-left: 10px;
+}
+#countRangeoutput>p{
+    margin-bottom: 45px;
+}
+
 
 @media (max-width: 1250px) {
     /* .btnMapOption.btn{
@@ -389,6 +466,7 @@
         margin-top: 180px;
         right: 20px;
     }
+    
 }
 
 @media (max-width: 860px) {

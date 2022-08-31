@@ -99,6 +99,11 @@
     outline: none;
 }
 
+.dis option {
+    padding: 5px 0;
+
+}
+
 @media (max-width: 991px) {
     .BusinessDetailRunTime {
         padding-left: 5%;

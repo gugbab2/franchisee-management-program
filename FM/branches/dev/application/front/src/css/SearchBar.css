@@ -92,7 +92,7 @@
 }
 
 .searchArea--Input{
-    z-index: 1046;
+    z-index: 2;
     margin: 0px;
     padding: 0px;
     height: fit-content;

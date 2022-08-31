@@ -204,7 +204,7 @@ function FranchiseeFind() {
             if (res.status === 200) {
                 window.scrollTo(0, 0);
                 setFranchiseeList(res.data);
-                console.log('success', res.data);
+                // console.log('success', res.data);
                 setSearchPage(false);
             }
         }
@@ -212,7 +212,7 @@ function FranchiseeFind() {
         const failCallback = (err) => {
             window.scrollTo(0, 0);
             setFranchiseeList(null);
-            console.log('fail', err);
+            // console.log('fail', err);
             setSearchPage(false);
         }
 

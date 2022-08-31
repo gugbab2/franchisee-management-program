@@ -1,6 +1,6 @@
 .menu {
     position: relative;
-    margin : 70px auto;
+    margin: 70px auto;
     border-radius: 12px;
     box-shadow: 0 15px 20px 0 rgb(0 0 0 / 5%);
     background-color: #fff;
@@ -46,32 +46,52 @@
     position: relative;
     right: 10px;
     width: 130px;
-    font-family: NanumSquareEB,Apple SD Gothic Neo,Helvetica Nenu,Helvetica,sans-serif;
+    font-family: NanumSquareEB, Apple SD Gothic Neo, Helvetica Nenu, Helvetica, sans-serif;
     color: #222;
+    cursor: pointer;
 }
 
-@media ( max-width: 996px ) {
+@media (max-width: 996px) {
     .menu__list {
         margin-top: 160px;
     }
-    .menu__link{
+
+    .menu__link {
         padding: 10px 10px;
         position: relative;
         right: 10px;
         width: 100px;
     }
+
     .menu {
         width: 620px;
         height: 140px;
     }
+
     .menu__link__text {
         font-size: 12px;
         right: 14px;
     }
+
+    .responsive-menu-link {
+        top: -34px;
+        right: 24px;
+    }
+
+    .menu__link_icon {
+        position: relative;
+        top: -32px;
+    }
+
+    #responsive-menu-link-map {
+        right: 15px;
+    }
+
     .menu__link {
         position: relative;
         top: 8px;
     }
+
     .sc-bczRLJ {
         position: relative;
         left: 10px;

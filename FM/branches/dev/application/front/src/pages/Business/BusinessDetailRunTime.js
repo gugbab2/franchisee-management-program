@@ -1,8 +1,11 @@
-import { Row } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { Dropdown, Row } from 'react-bootstrap';
+import { useEffect, useRef, useState } from 'react';
 import '../../css/Business/BusinessDetailRunTime.css';
 import { instance } from '../../template/AxiosConfig/AxiosInterceptor';
 import { ToastContainer, toast } from 'react-toastify';
+import { MenuItem, Select } from '@mui/material';
+import { sizeHeight } from '@mui/system';
+import $ from 'jquery';
 
 function BusinessDetailRunTime({ businessNumber, businessDetailInfo, setBusinessDetailInfo }) {
 
@@ -137,6 +140,12 @@ function BusinessDetailRunTime({ businessNumber, businessDetailInfo, setBusiness
         setRunningTime(runningTime.map((time) => time.id === id ? { ...time, dayOff: !time.dayOff } : time));
     };
 
+    const [age, setAge] = useState('');
+
+    const handleChange = (event) => {
+        setAge(event.target.value);
+    };
+
     return (
         <>
             <div className='BusinessDetailRunTime'>
@@ -148,7 +157,6 @@ function BusinessDetailRunTime({ businessNumber, businessDetailInfo, setBusiness
                         <>
                             {runningTime.map((ele, idx) => {
                                 return (
-
                                     <div className="BusinessDetailRunTime-daycasezone" key={idx}>
                                         <div className='BusinessDetailRunTime-textzone'>
                                             <span>

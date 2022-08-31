@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 let isRefresh = false;
@@ -20,7 +20,6 @@ const reqProcess = (err, token = null) => {
 };
 
 export const instance = axios.create({
-    // baseURL: "http://192.168.240.250:8080/api/v1",
     baseURL: process.env.REACT_APP_SERVER_URL + "/api/v1"
 });
 
@@ -49,7 +48,7 @@ instance.interceptors.response.use(
             accessToken: localStorage.getItem("accessToken"),
             refreshToken: localStorage.getItem("refreshToken"),
         };
-        console.log(err);
+        // console.log(err);
 
         if (err.response.data.code === 'T002' || err.response.data.code === 'T007') {
             // 재발급 실패. => 재로그인
@@ -70,7 +69,7 @@ instance.interceptors.response.use(
                         return axios(originReq);
                     })
                     .catch((err) => {
-                        console.log(err);
+                        // console.log(err);
                         if (err.response.data.code === "T002" || err.response.data.code === "T004" || err.response.data.code === "T007") {
                             // 재발급 실패. => 재로그인
                             errorNotify("다시 로그인 하시길 바랍니다.");

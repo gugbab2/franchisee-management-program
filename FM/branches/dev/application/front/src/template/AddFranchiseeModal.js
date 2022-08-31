@@ -11,7 +11,7 @@ import { modalControllerContext } from "../pages/Mypage";
 
 export const franchiseeinfoContext = createContext();
 
-export default function FrenchiseeModal() {
+export default function FrenchiseeModal({ addFranModal, setAddFranModal }) {
     //컴포넌트추가
     const [story, setStory] = useState([]);
     const modalController = useContext(modalControllerContext);
@@ -35,7 +35,9 @@ export default function FrenchiseeModal() {
 
     const addFrenModalClose = () => {
         setStory([]);
-        modalController.setAddFrenModalShow(false);
+        if (modalController) {
+            modalController.setAddFrenModalShow(false);
+        } else setAddFranModal(false);
         setFranchiseeaddressinfo({
             ...franchiseeaddressInfo,
             jibun: "",
@@ -74,7 +76,8 @@ export default function FrenchiseeModal() {
                 }}
             >
                 <Modal
-                    show={modalController.showAddFrenModal}
+                    show={addFranModal === undefined ? modalController.showAddFrenModal : addFranModal}
+                    // show={modalController.showAddFrenModal ? modalController.showAddFrenModal : false}
                     onHide={addFrenModalClose}
                     keyboard={false}
                     centered
@@ -91,6 +94,7 @@ export default function FrenchiseeModal() {
                             inputElement={inputElement}
                             story={story}
                             setStory={setStory}
+                            setAddFranModal={setAddFranModal}
                         ></Addfranchisee>
                     </ModalBody>
                 </Modal>

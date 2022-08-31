@@ -1,5 +1,5 @@
 .businessDetailInfo {
-  padding: 0 350px 100px 20%;
+  padding: 0 350px 100px 18%;
   /* padding: 0 950px 100px 0px; */
   width: 88%;
   margin-left: 230px;
@@ -155,6 +155,17 @@
   }
 
 }
+
+@media (max-width:1670px) {
+    .businessDetailInfo {
+        padding: 0 150px 100px 10%;
+        width: 88%;
+        /* max-width: 100%; */
+        margin-left: 230px;
+        margin-right: 50px;
+    }
+}
+
 
 #imgtt {
   display: inline-block;

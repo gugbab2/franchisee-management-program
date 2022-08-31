@@ -16,7 +16,7 @@ import { faEnvelope, faUser, faExclamationCircle } from "@fortawesome/free-solid
 
 const steps = ["기본정보", "추가정보", "영업시간"];
 
-function AddFranchisee({ inputElement }) {
+function AddFranchisee({ inputElement, setAddFranModal }) {
     const franchiseeInfo = useContext(franchiseeinfoContext);
     const listRefresh = useContext(modalControllerContext);
     let scriptUrl = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
@@ -80,7 +80,6 @@ function AddFranchisee({ inputElement }) {
     const onLoadimage = (e) => {
         const imageFile = e.target.files[0];
         encodingImg(imageFile);
-        console.log(imageFile)
 
         var frm = new FormData();
         frm.append("files", e.target.files[0]);
@@ -103,7 +102,6 @@ function AddFranchisee({ inputElement }) {
     const [imgsrc, setImgsrc] = useState("");
 
     const encodingImg = (imgfile) => {
-        console.log()
         if (imgfile.type !== "image/png" && imgfile.type !== "image/jpeg" && imgfile.type !== "image/gif" && imgfile.type !== "image/jpg") {
             return;
         }
@@ -152,7 +150,6 @@ function AddFranchisee({ inputElement }) {
     const onLoadBackImg = (e) => {
         var frm = new FormData();
         frm.append("files", e.target.files[0]);
-        console.log(e.target.files[0])
         if (e.target.files[0].type !== "image/png" && e.target.files[0].type !== "image/jpeg" && e.target.files[0].type !== "image/gif" && e.target.files[0].type !== "image/jpg") {
             toast.error('이미지 형식의 파일을 올려주세요.', toast.toastDefaultOption);
             return;
@@ -224,12 +221,14 @@ function AddFranchisee({ inputElement }) {
                     y: franchiseeInfo.franchiseeinput.y,
                 },
             }).then(function (res) {
-                // listRefresh.setList((list) => [...list, res.data]);
-                // listRefresh.setList(res.data);                
-                if ((listRefresh.searchCount % 5) === 0) {
-                    listRefresh.setFranPage(Math.ceil(listRefresh.searchCount / 5) + 1);
-                } else listRefresh.setFranPage(Math.ceil(listRefresh.searchCount / 5));
-                listRefresh.setAddFrenModalShow(false);
+                if (listRefresh) {
+                    if ((listRefresh.searchCount % 5) === 0) {
+                        listRefresh.setFranPage(Math.ceil(listRefresh.searchCount / 5) + 1);
+                    } else listRefresh.setFranPage(Math.ceil(listRefresh.searchCount / 5));
+                    listRefresh.setAddFrenModalShow(false);
+                } else {
+                    setAddFranModal(false);
+                }
                 toast.success("가맹점 등록이 완료되었습니다.", toast.toastDefaultOption);
                 franchiseeInfo.setFranchiseeaddressinfo({
                     ...franchiseeInfo.franchiseeaddressInfo,
@@ -285,8 +284,9 @@ function AddFranchisee({ inputElement }) {
                 });
                 return;
             }
+            const atkchk = '<script>'
             // 가맹점 추가시 비어있는 값 찾기.
-            if (franchiseeInfo.franchiseeinput.franchiseename) {
+            if (franchiseeInfo.franchiseeinput.franchiseename && !franchiseeInfo.franchiseeinput.franchiseename.includes(atkchk)) {
                 if (franchiseeInfo.franchiseeinput.phonenumber.length > 8 && franchiseeInfo.franchiseeinput.phonenumber.length < 12 &&
                     chknum.test(franchiseeInfo.franchiseeinput.phonenumber) &&
                     tempTel.length > 2
